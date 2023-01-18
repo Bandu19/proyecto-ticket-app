@@ -1,11 +1,14 @@
 import React, { useContext, useState } from 'react'
-import { Button, Col, Row, Typography } from 'antd'
+// import { Button, Col, Row, Typography } from 'antd'
+import { Button, Col, Row} from 'antd'
 import { DownloadOutlined } from '@ant-design/icons'
 import { useHideMenu } from '../hooks/useHideMenu'
-// import { SocketContext } from '../context/SocketContext'
-import axios from 'axios'
+import { SocketContext } from '../context/UiContext';
 
-const { Title, Text } = Typography
+import axios from 'axios'
+import { Link } from 'react-router-dom'
+
+// const { Title, Text } = Typography
 
 export const CrearTicket = () => {
 
@@ -14,7 +17,7 @@ export const CrearTicket = () => {
     useHideMenu(false)
 
     // USECONTEXT
-    // const { socket } = useContext(SocketContext)
+    const { recibirFactura } = useContext(SocketContext)
 
 
     // const [tickets, setTickets] = useState(null)
@@ -32,22 +35,19 @@ export const CrearTicket = () => {
     //     })
     // }
 
-    // for(let index = 0; index < archivos.length; index++){
-    //     f.append("files",archivos[index]);
-    // }
-
-
 
     const [archivos, setArchivos] = useState('')
     console.log(archivos)
-
-    // ** FUNCION
+    // const [validandoButton,setValidandoButton] = useState(true)
+    // console.log(validandoButton)
+    
+    // ** FUNCION INPUT
     const subirArchivos = (e) => {
         console.log(e)
         setArchivos(e[0])
     }
 
-    // ** FUNCION
+    // ** FUNCION BUTTON
     const insertarArchivos = async () => {
 
         const config = {
@@ -62,16 +62,21 @@ export const CrearTicket = () => {
 
         formData.append('magic-key', key);
         formData.append('xml-file', archivos);
+        try {
+            const res = await axios.post("https://sea-lion-app-q3dmv.ondigitalocean.app/cfdi", formData, config)
+            console.log(res.data)
+            //** DEVOLVER ESTADO EN USECONTEXT
+            recibirFactura(res.data)
 
-        // console.log([...formData])
 
-        await axios.post("https://sea-lion-app-q3dmv.ondigitalocean.app/cfdi", formData, config)
-            .then(response => {
-                console.log(response.data)
-            }).catch(error => {
-                console.log(error)
-            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+     // HABILITAR Y DESABILITAR BUTTON
+     const todoOk = () => {
+        return (archivos.type) ? true : false
     }
 
     return (
@@ -79,23 +84,27 @@ export const CrearTicket = () => {
             <Row>
                 <Col span={14} offset={6} align="center">
 
-                    <input type='file' name='files' multiple onChange={(e) => subirArchivos(e.target.files)} />
-
+                    <input type='file' name='files' className='form-control form-control-lg' accept="text/xml" onChange={(e) => subirArchivos(e.target.files)} />
+                
                 </Col>
             </Row>
 
             <Row>
                 <Col span={14} offset={6} align="center">
                     <br /><br />
-                    <Button
-                        type="primary"
-                        shape="round"
-                        icon={<DownloadOutlined />}
-                        size="large"
-                        onClick={() => insertarArchivos()}
-                    >
-                        Insertar Archivos
-                    </Button>
+                    <Link to="/formulario">
+                        <Button
+                            type="primary"
+                            shape="round"
+                            icon={<DownloadOutlined />}
+                            size="large"
+                            onClick={() => insertarArchivos()}
+                            disabled={!todoOk()}
+                        >
+                            Insertar Archivos
+                        </Button>
+                    </Link>
+               
                 </Col>
             </Row>
 

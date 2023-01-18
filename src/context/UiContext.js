@@ -8,6 +8,11 @@ export const UiProvider = ({ children }) => {
 
     const [ocultarMenu, setOcultarMenu] = useState(true)
 
+    const [factura, setFactura ] = useState('')
+
+    const [validando,setValidando] = useState(false)
+    // console.log(factura.Fecha)
+
     const showMenu = () => {
         setOcultarMenu(false)
     }
@@ -16,10 +21,15 @@ export const UiProvider = ({ children }) => {
         setOcultarMenu(true)
     }
 
+    const recibirFactura = (datos) => {
+        setFactura(datos)
+        setValidando(true)
+    }
+
 
     return (
 
-        <SocketContext.Provider value={{ ocultarMenu, showMenu, hideMenu }}>
+        <SocketContext.Provider value={{validando, ocultarMenu, showMenu, hideMenu, recibirFactura, factura }}>
             {children}
         </SocketContext.Provider>
     )

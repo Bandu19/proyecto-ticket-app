@@ -23,6 +23,7 @@ import {
 
 
 import { Layout, Menu } from 'antd';
+import { Formulario } from './formulario';
 
 const { Sider, Content } = Layout;
 
@@ -48,7 +49,7 @@ export const RouterPage = () => {
                     <Menu
                         theme="dark"
                         mode="inline"
-                        defaultSelectedKeys={['1']}
+                        defaultSelectedKeys={['4']}
                         items={[
                             {
                                 key: '1',
@@ -62,16 +63,16 @@ export const RouterPage = () => {
                                 key: '2',
                                 icon: <VideoCameraOutlined />,
                                 label: <Link to="/cola">
-                                    Cola de Tickets
+                                    list
                                 </Link>,
                             },
                             {
                                 key: '3',
                                 icon: <UploadOutlined />,
                                 label: <Link to="/crear">
-                                    Crear tickets
+                                    Enviar archivos xml
                                 </Link>,
-                            },
+                            }
                         ]}
                     />
                 </Sider>
@@ -91,10 +92,13 @@ export const RouterPage = () => {
                         <Routes>
                             <Route path="/ingresar" element={<Ingresar />} />
                             <Route path="/cola" element={<Cola />} />
-                            <Route path="/crear" element={<CrearTicket />} />
                             <Route path="/escritorio" element={<Escritorio />} />
 
-                            <Route path="/" element={<Navigate to="/ingresar" />} />
+
+                            <Route path="/crear" element={<CrearTicket />} />
+                            <Route path="/formulario" element={<Formulario />} />
+                            
+                            <Route path="/" element={<Navigate to="/crear" />} />
 
                         </Routes>
 
