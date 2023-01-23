@@ -37,9 +37,6 @@ export const CrearTicket = () => {
 
 
     const [archivos, setArchivos] = useState('')
-    console.log(archivos)
-    // const [validandoButton,setValidandoButton] = useState(true)
-    // console.log(validandoButton)
     
     // ** FUNCION INPUT
     const subirArchivos = (e) => {
@@ -64,7 +61,7 @@ export const CrearTicket = () => {
         formData.append('xml-file', archivos);
         try {
             const res = await axios.post("https://sea-lion-app-q3dmv.ondigitalocean.app/cfdi", formData, config)
-            console.log(res.data)
+            // console.log(res.data)
             //** DEVOLVER ESTADO EN USECONTEXT
             recibirFactura(res.data)
 

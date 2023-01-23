@@ -37,7 +37,7 @@ export const RouterPage = () => {
 
         <Router>
 
-            <Layout style={{ height: '100vh' }}>
+            <Layout style={{ height: '200vh' }}>
 
                 <Sider hidden={ocultarMenu}
                     // collapsible collapsed={collapsed}

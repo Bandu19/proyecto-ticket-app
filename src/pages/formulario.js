@@ -1,14 +1,15 @@
-import { Button, Divider, Typography } from "antd";
+import { Divider, List, Typography } from "antd";
 import { useHideMenu } from "../hooks/useHideMenu"
 import { SocketContext } from '../context/UiContext';
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Card, CardContent, Grid, TextField } from "@mui/material";
+// import ArticleIcon from '@mui/icons-material/Article';
+import { Box, CardContent, Grid, ListItem, ListItemText, TextField } from "@mui/material";
 
 const { Title, Text } = Typography;
 export const Formulario = () => {
 
-    const { validando, factura } = useContext(SocketContext) /// DATA 
+    const { validando, factura } = useContext(SocketContext) /// DATA
     console.log(factura)
     // UseState
     // const inputRef = useRef(null);
@@ -23,11 +24,14 @@ export const Formulario = () => {
         rfcReceptor: '',
         usoCFDI_Receptor: '',
         subtotal: '',
+        conceptos: [],
         impuesto: '',
         total: '',
         uuidaFac: ''
 
     })
+
+    useHideMenu(false)
 
     console.log(form)
 
@@ -36,17 +40,18 @@ export const Formulario = () => {
         if (validando) {
             setForm((form) => ({
                 ...form,
-                fecha: factura.Fecha,
-                folio: factura.Folio,
-                nombreEmisor: factura.Emisor.Nombre,
-                rfcEmisor: factura.Emisor.RFC,
-                regimenFiscalEmisor: factura.Emisor.RegimenFiscal,
-                nombreReceptor: factura.Receptor.Nombre,
-                rfcReceptor: factura.Receptor.RFC,
-                usoCFDI_Receptor: factura.Receptor.UsoCFDI,
-                subtotal: factura.Subtotal,
-                total: factura.Total,
-                uuidaFac: factura.TimbreFiscalDigital.UUID
+                fecha: factura?.Fecha,
+                folio: factura?.Folio,
+                nombreEmisor: factura?.Emisor.Nombre,
+                rfcEmisor: factura?.Emisor.RFC,
+                regimenFiscalEmisor: factura?.Emisor.RegimenFiscal,
+                nombreReceptor: factura?.Receptor.Nombre,
+                rfcReceptor: factura?.Receptor.RFC,
+                usoCFDI_Receptor: factura?.Receptor.UsoCFDI,
+                subtotal: factura?.Subtotal,
+                conceptos: factura?.Conceptos,
+                total: factura?.Total,
+                uuidaFac: factura?.TimbreFiscalDigital.UUID
             }))
         }
     }, [validando, factura])
@@ -59,23 +64,25 @@ export const Formulario = () => {
         })
     }
 
+
     const onSubmit = async (ev) => {
         ev.preventDefault();
         console.log(form)
-        // setForm((form) => ({
-        //     ...form,
-        //     fecha: '',
-        //     folio: '',
-        //     nombreEmisor: '',
-        //     rfcEmisor: '',
-        //     regimenFiscalEmisor:'',
-        //     nombreReceptor: '',
-        //     rfcReceptor: '',
-        //     usoCFDI_Receptor: '',
-        //     subtotal: '',
-        //     total: '',
-        //     uuidaFac: ''
-        // }))
+        setForm((form) => ({
+            ...form,
+            fecha: '',
+            folio: '',
+            nombreEmisor: '',
+            rfcEmisor: '',
+            regimenFiscalEmisor: '',
+            nombreReceptor: '',
+            rfcReceptor: '',
+            usoCFDI_Receptor: '',
+            conceptos: '',
+            subtotal: '',
+            total: '',
+            uuidaFac: ''
+        }))
         const config = {
             headers: {
                 'Accept': 'application/json'
@@ -92,8 +99,39 @@ export const Formulario = () => {
         }
     }
 
+    // const crearRows = (data)=>{
+    //     // console.log(data)
 
-    useHideMenu(false)
+    //    return(
+    //     data?.forEach(element => {
+    //         // console.log(element)
+    //         // <div>{element.ClaveUnidad}</div>
+    //         // <div key={element.Cantidad}>
+    //         //      <CardContent>
+    //         //         <div className="row h6">
+    //         //             <Box my={0}>
+    //         //                 <Grid container direction="row" spacing={2}>
+    //         //                     <Text>Cantidad: </Text> 
+    //         //                     {/* <TextField
+    //         //                         error={false}
+    //         //                         label="Subtotal"
+    //         //                         type="text"
+    //         //                         name="subtotal"
+    //         //                         margin="dense"
+    //         //                         variant="outlined"
+    //         //                         fullWidth
+    //         //                         color="success"
+    //         //                         value={band.ClaveUnidad}
+    //         //                         onChange={onChange}
+    //         //                     /> */}
+    //         //                  </Grid>
+    //         //             </Box>
+    //         //         </div>
+    //         //     </CardContent> 
+    //         // </div>
+    //     })
+    //     )
+    // }
 
     return (
         <>
@@ -104,31 +142,24 @@ export const Formulario = () => {
                 <form
                     onSubmit={onSubmit}
                 >
-                    <div className="row ">
-                        <div className="col-6 ">
-                            <Text>Fecha: </Text>
-                            {/* <input
-                                type="text"
-                                name="fecha"
-                                className="form-control"
-                                placeholder="Fecha"
-                                value={form.fecha}
-                                onChange={onChange}
-                            /> */}
+                    <div className="row">
+                        <div className="col-6 position-relative">
+                            <Title level={2}>Fecha: </Title>
                             <Box my={2}>
-                                <Grid container direction="row" spacing={2}>
+                                <Grid container direction="row" justifyContent="center" spacing={2}>
                                     <CardContent>
                                         <TextField
                                             error={false}
-                                            label="First Name"
+                                            label="Fecha"
                                             type="text"
                                             name="fecha"
                                             margin="dense"
                                             variant="outlined"
                                             fullWidth
+                                            color="success"
                                             value={form.fecha}
                                             onChange={onChange}
-                                            helperText="Campo Obligatorio"
+                                        // helperText="Campo Obligatorio"
                                         />
                                     </CardContent>
                                 </Grid>
@@ -138,16 +169,26 @@ export const Formulario = () => {
                         </div>
 
                         <div className="col-6">
-                            <Text>Folio: </Text>
-                            <input
-                                type="text"
-                                name="folio"
-                                className="form-control"
-                                placeholder="folio"
-                                value={form.folio}
-                                onChange={onChange}
-                            />
-                            <br />
+                            <Title level={2}>Folio: </Title>
+                            <Box my={0}>
+                                <Grid container direction="row" justifyContent="center" spacing={2}>
+                                    <CardContent>
+                                        <TextField
+                                            error={false}
+                                            label="Folio"
+                                            type="text"
+                                            name="folio"
+                                            margin="dense"
+                                            variant="outlined"
+                                            fullWidth
+                                            color="success"
+                                            value={form.folio}
+                                            onChange={onChange}
+                                        // helperText="Campo Obligatorio"
+                                        />
+                                    </CardContent>
+                                </Grid>
+                            </Box>
                         </div>
 
                     </div>
@@ -157,171 +198,296 @@ export const Formulario = () => {
                         <div className="col-6">
                             <Title level={3}>Emisor</Title>
                             <Divider />
-                            <div className="row">
-                                <div className="col">
-                                    <Text>Nombre: </Text>
-                                    <input
-                                        type="text"
-                                        name="nombreEmisor"
-                                        className="form-control"
-                                        placeholder="Nombre del emisor"
-                                        value={form.nombreEmisor}
-                                        onChange={onChange}
-                                    />
-                                    &nbsp;
-                                    <br />
+                            <CardContent >
+                                <div className="row h6">
+                                    <Box my={0}>
+                                        <Grid container direction="row" spacing={2}>
+                                            <Text>Nombre: </Text>
+                                            <TextField
+                                                error={false}
+                                                label="Nombre del emisor"
+                                                type="text"
+                                                name="nombreEmisor"
+                                                margin="dense"
+                                                variant="outlined"
+                                                fullWidth
+                                                color="success"
+                                                value={form.nombreEmisor}
+                                                onChange={onChange}
+                                            />
+                                        </Grid>
+                                    </Box>
                                 </div>
-                            </div>
-                            <div className="h6">
-                                <Text>RFC: </Text>
-                                <input
-                                    type="text"
-                                    name="rfcEmisor"
-                                    className="form-control input-sm"
-                                    placeholder="RFC del emisor"
-                                    value={form.rfcEmisor}
-                                    onChange={onChange}
-                                />
-                            </div>
-                            <br />
-                            <Text>Regimen Fiscal: </Text>
-                            <input
-                                type="text"
-                                name="regimenFiscalEmisor"
-                                className="form-control input-sm"
-                                placeholder="Regimen Fiscal del emisor"
-                                value={form.regimenFiscalEmisor}
-                                onChange={onChange}
-                            />
+                            </CardContent>
+
+                            <CardContent>
+                                <div className="h6">
+                                    <Box my={0}>
+                                        <Grid container direction="row" spacing={2}>
+                                            <Text>RFC: </Text>
+                                            <TextField
+                                                error={false}
+                                                label="RFC del Emisor"
+                                                type="text"
+                                                name="rfcEmisor"
+                                                margin="dense"
+                                                variant="outlined"
+                                                fullWidth
+                                                color="success"
+                                                value={form.rfcEmisor}
+                                                onChange={onChange}
+                                            />
+                                        </Grid>
+                                    </Box>
+                                </div>
+                            </CardContent>
+
+                            <CardContent>
+                                <div className="h6">
+                                    <Box my={0}>
+                                        <Grid container direction="row" spacing={2}>
+                                            <Text>Regimen Fiscal: </Text>
+                                            <TextField
+                                                error={false}
+                                                label="RFC del Emisor"
+                                                type="text"
+                                                name="regimenFiscalEmisor"
+                                                margin="dense"
+                                                variant="outlined"
+                                                fullWidth
+                                                color="success"
+                                                value={form.regimenFiscalEmisor}
+                                                onChange={onChange}
+                                            />
+                                        </Grid>
+                                    </Box>
+                                </div>
+                            </CardContent>
                         </div>
 
                         <div className="col-6">
                             <Title level={3}>Receptor</Title>
                             <Divider />
 
-                            <Text>Nombre: </Text>
-                            <input
-                                type="text"
-                                name="nombreReceptor"
-                                className="form-control"
-                                placeholder="Nombre del Receptor"
-                                value={form.nombreReceptor}
-                                onChange={onChange}
-                            />
-                            &nbsp;
-                            <br />
-                            <Text>RFC: </Text>
-                            <input
-                                type="text"
-                                name="rfcReceptor"
-                                className="form-control"
-                                placeholder="RFC del receptor"
-                                value={form.rfcReceptor}
-                                onChange={onChange}
-                            />
-                            <br />
-                            <Text>Uso CFDI: </Text>
-                            <input
-                                type="text"
-                                name="usoCFDI_Receptor"
-                                className="form-control"
-                                placeholder="CFDI"
-                                value={form.usoCFDI_Receptor}
-                                onChange={onChange}
-                            />
+                            <CardContent >
+                                <div className="row h6">
+                                    <Box my={0}>
+                                        <Grid container direction="row" spacing={2}>
+                                            <Text>Nombre: </Text>
+                                            <TextField
+                                                error={false}
+                                                label="Nombre del Receptor"
+                                                type="text"
+                                                name="nombreReceptor"
+                                                margin="dense"
+                                                variant="outlined"
+                                                fullWidth
+                                                color="success"
+                                                value={form.nombreReceptor}
+                                                onChange={onChange}
+                                            />
+                                        </Grid>
+                                    </Box>
+                                </div>
+                            </CardContent>
 
-                            <br />
+                            <CardContent >
+                                <div className="row h6">
+                                    <Box my={0}>
+                                        <Grid container direction="row" spacing={2}>
+                                            <Text>RFC: </Text>
+                                            <TextField
+                                                error={false}
+                                                label="RFC del Receptor"
+                                                type="text"
+                                                name="rfcReceptor"
+                                                margin="dense"
+                                                variant="outlined"
+                                                fullWidth
+                                                color="success"
+                                                value={form.rfcReceptor}
+                                                onChange={onChange}
+                                            />
+                                        </Grid>
+                                    </Box>
+                                </div>
+                            </CardContent>
+
+                            <CardContent >
+                                <div className="row h6">
+                                    <Box my={0}>
+                                        <Grid container direction="row" spacing={2}>
+                                            <Text>Uso CFDI: </Text>
+                                            <TextField
+                                                error={false}
+                                                label="CFDI"
+                                                type="text"
+                                                name="usoCFDI_Receptor"
+                                                margin="dense"
+                                                variant="outlined"
+                                                fullWidth
+                                                color="success"
+                                                value={form.usoCFDI_Receptor}
+                                                onChange={onChange}
+                                            />
+                                        </Grid>
+                                    </Box>
+                                </div>
+                            </CardContent>
                         </div>
                     </div>
                     <Divider />
 
                     <div className="row">
-                        <div className="col-3">
-                            <div className="row">
-                                <div className="col-4">
-                                    <Text>Subtotal: </Text>
-                                </div>
-                                <div className="col">
-                                    <input
-                                        type="text"
-                                        name="subtotal"
-                                        className="form-control"
-                                        placeholder="Subtotal"
-                                        value={form.subtotal}
-                                        onChange={onChange}
-                                    />
-                                </div>
-                            </div>
-                            &nbsp;
-                            <br />
 
-                            <div className="row">
-                                <div className="col-5">
-                                    <Text>Impuesto: </Text>
+                        <div className="col-4">
+                            <CardContent >
+                                <div className="row h6">
+                                    <Box my={0}>
+                                        <Grid container direction="row" spacing={2}>
+                                            <Text>Subtotal: </Text>
+                                            <TextField
+                                                error={false}
+                                                label="Subtotal"
+                                                type="text"
+                                                name="subtotal"
+                                                margin="dense"
+                                                variant="outlined"
+                                                fullWidth
+                                                color="success"
+                                                value={form.subtotal}
+                                                onChange={onChange}
+                                            />
+                                        </Grid>
+                                    </Box>
                                 </div>
-                                <div className="col">
-                                    <input
-                                        type="text"
-                                        name="impuesto"
-                                        className="form-control"
-                                        placeholder="Impuesto"
-                                        value={form.impuesto}
-                                        onChange={onChange}
-                                    />
+                            </CardContent>
+
+                            <CardContent >
+                                <div className="row h6">
+                                    <Box my={0}>
+                                        <Grid container direction="row" spacing={2}>
+                                            <Text>Impuesto: </Text>
+                                            <TextField
+                                                error={false}
+                                                label="Impuesto"
+                                                type="text"
+                                                name="impuesto"
+                                                margin="dense"
+                                                variant="outlined"
+                                                fullWidth
+                                                color="success"
+                                                value={form.impuesto}
+                                                onChange={onChange}
+                                            />
+                                        </Grid>
+                                    </Box>
                                 </div>
-                            </div>
-                            <br />
-                            <div className="row">
-                                <div className="col-5">
-                                    <Text>Total: </Text>
+                            </CardContent>
+
+                            <CardContent >
+                                <div className="row h6">
+                                    <Box my={0}>
+                                        <Grid container direction="row" spacing={2}>
+                                            <Text>Total: </Text>
+                                            <TextField
+                                                error={false}
+                                                label="Total"
+                                                type="text"
+                                                name="total"
+                                                margin="dense"
+                                                variant="outlined"
+                                                fullWidth
+                                                color="success"
+                                                value={form.total}
+                                                onChange={onChange}
+                                            />
+                                        </Grid>
+                                    </Box>
                                 </div>
-                                <div className="col">
-                                    <input
-                                        type="text"
-                                        name="total"
-                                        className="form-control"
-                                        placeholder="Total"
-                                        value={form.total}
-                                        onChange={onChange}
-                                    />
+                            </CardContent>
+                        </div>
+
+                        <div className="col-6">
+                            {
+                                // Array.isArray(form.conceptos)
+                                //     ? <h2>Es un array</h2>
+                                //     : <h2>No un array</h2>
+                            }
+                            <CardContent >
+                                <div className="row h6">
+                                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                                        <Text>Conceptos: </Text>
+                                        {form.conceptos.map((value) => (
+                                            <ListItem
+                                                key={value}
+                                                disableGutters
+                                                alignItems="flex-start"
+                                            >
+                                                 <ListItemText
+                                                    primary="Brunch this weekend?"
+                                                    secondary={
+                                                      <>
+                                                        <Typography
+                                                          sx={{ display: 'inline' }}
+                                                          component="span"
+                                                          variant="body2"
+                                                          color="text.primary"
+                                                        >
+                                                          Ali Connors
+                                                        </Typography>
+                                                      </>
+                                                    }
+                                                 />
+                                                {/* <ListItemText primary={`Line item ${value.Cantidad}`} /> */}
+
+                                            </ListItem>
+                                        ))}
+                                    </List>
                                 </div>
-                            </div>
+                            </CardContent>
+
                         </div>
 
                     </div>
                     <Divider />
-                    <div className="col-6">
-                        <div className="row">
-                            <div className="col-2">
-                                <Text>UUID: </Text>
+                    <div className="col-9">
+
+                        <CardContent >
+                            <div className="row h6">
+                                <Box my={0}>
+                                    <Grid container direction="row" spacing={2}>
+                                        <Text>UUID: </Text>
+                                        <TextField
+                                            error={false}
+                                            label="UUID"
+                                            type="text"
+                                            name="uuidaFac"
+                                            margin="dense"
+                                            variant="outlined"
+                                            fullWidth
+                                            color="success"
+                                            value={form.uuidaFac}
+                                            onChange={onChange}
+                                        />
+                                    </Grid>
+                                </Box>
                             </div>
-                            <div className="col">
-                                <input
-                                    type="text"
-                                    name="uuidaFac"
-                                    className="form-control"
-                                    placeholder="UUID"
-                                    value={form.uuidaFac}
-                                    onChange={onChange}
-                                />
-                            </div>
-                        </div>
+                        </CardContent>
                     </div>
                     <br />
-                    <div className="text-center">
+                    <div className="text-center d-grid gap-2 col-6 mx-auto">
+
                         <button
                             className="btn btn-outline-success btn-lg"
                             type="submit"
 
                         >
-                            enviar
+                            Enviar
                         </button>
-                        <Button
-                            variant="outline"
-                            color="primary"
-                        >
-                            Hello World
-                        </Button>
+
+
+
                     </div>
 
                 </form>
