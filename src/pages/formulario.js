@@ -424,22 +424,23 @@ export const Formulario = () => {
                                                 disableGutters
                                                 alignItems="flex-start"
                                             >
-                                                 <ListItemText
+                                                <ListItemText
                                                     primary="Brunch this weekend?"
                                                     secondary={
-                                                      <>
-                                                        <Typography
-                                                          sx={{ display: 'inline' }}
-                                                          component="span"
-                                                          variant="body2"
-                                                          color="text.primary"
-                                                        >
-                                                          Ali Connors
-                                                        </Typography>
-                                                      </>
+                                                        <>
+                                                            <Typography
+                                                                sx={{ display: 'inline' }}
+                                                                component="span"
+                                                                variant="body2"
+                                                                color="text.primary"
+                                                            >
+                                                                Cantidad
+                                                            </Typography>
+                                                            {" — I'll be in your neighborhood doing errands this…"}
+                                                        </>
                                                     }
-                                                 />
-                                                {/* <ListItemText primary={`Line item ${value.Cantidad}`} /> */}
+                                                />
+                                                {/* <Divider variant="inset" component="li" /> */}
 
                                             </ListItem>
                                         ))}
