@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-// import { Button, Col, Row, Typography } from 'antd'
 import { Button, Col, Row} from 'antd'
 import { DownloadOutlined } from '@ant-design/icons'
 import { useHideMenu } from '../hooks/useHideMenu'
@@ -18,23 +17,6 @@ export const CrearTicket = () => {
 
     // USECONTEXT
     const { recibirFactura } = useContext(SocketContext)
-
-
-    // const [tickets, setTickets] = useState(null)
-    // console.log(tickets)
-
-    //
-    // const nuevoTicket = () => {
-    //     console.log("nuevoTicket")
-
-    //     // ENVIANDO 3 parametros al socket
-    //     socket.emit("solicitar-ticket", null, (ticket) => {
-    //         console.log(ticket)
-
-    //         setTickets(ticket)
-    //     })
-    // }
-
 
     const [archivos, setArchivos] = useState('')
     
@@ -59,6 +41,7 @@ export const CrearTicket = () => {
 
         formData.append('magic-key', key);
         formData.append('xml-file', archivos);
+        
         try {
             const res = await axios.post("https://sea-lion-app-q3dmv.ondigitalocean.app/cfdi", formData, config)
             // console.log(res.data)

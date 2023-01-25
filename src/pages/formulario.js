@@ -1,12 +1,17 @@
-import { Divider, List, Typography } from "antd";
+import { Divider, Typography } from "antd";
 import { useHideMenu } from "../hooks/useHideMenu"
 import { SocketContext } from '../context/UiContext';
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 // import ArticleIcon from '@mui/icons-material/Article';
-import { Box, CardContent, Grid, ListItem, ListItemText, TextField } from "@mui/material";
+import { Box, CardContent, Grid, List, ListItem, ListItemText, TextField } from "@mui/material";
+// import { FixedSizeList as List } from 'react-window';
+import { FixedSizeList } from "react-window";
+
+
 
 const { Title, Text } = Typography;
+
 export const Formulario = () => {
 
     const { validando, factura } = useContext(SocketContext) /// DATA
@@ -78,7 +83,7 @@ export const Formulario = () => {
             nombreReceptor: '',
             rfcReceptor: '',
             usoCFDI_Receptor: '',
-            conceptos: '',
+            conceptos: [],
             subtotal: '',
             total: '',
             uuidaFac: ''
@@ -133,6 +138,160 @@ export const Formulario = () => {
     //     )
     // }
 
+    function renderRow(props) {
+        const { index } = props;
+
+        return (
+            <React.Fragment key={index}>
+
+                {form.conceptos.map((value, index) => (
+                    <React.Fragment key={index}>
+
+                        <List component="nav" >
+
+                            <ListItem component="div" disablePadding>
+                                <ListItemText
+                                    // primary="Cantidad:"
+                                    secondary={
+                                        <>
+                                            <Typography
+                                                sx={{ display: 'inline' }}
+                                                component="span"
+                                                variant="body2"
+                                                color="text.primary"
+                                            >
+                                                Clave Unidad:
+                                            {`   ${value.ClaveUnidad}`}
+                                            </Typography>
+                                        </>
+                                    }
+                                />
+
+                            </ListItem>
+                        </List>
+
+                        <List component="nav">
+                            <ListItem component="div" disablePadding>
+                                <ListItemText
+                                    // primary="Cantidad:"
+                                    secondary={
+                                        <>
+                                            <Typography
+                                                sx={{ display: 'inline' }}
+                                                component="span"
+                                                variant="body2"
+                                                color="text.primary"
+                                            >
+                                                Clave Provedor:
+                                            {`   ${value.ClaveProdServ}`}
+                                            </Typography>
+                                        </>
+                                    }
+                                />
+
+                            </ListItem>
+
+                        </List>
+                        <List component="nav">
+
+                            <ListItem component="div" disablePadding>
+                                <ListItemText
+                                    secondary={
+                                        <>
+                                            <Typography
+                                                sx={{ display: 'inline' }}
+                                                component="span"
+                                                variant="body2"
+                                                color="text.primary"
+                                            >
+                                                Cantidad:
+                                            {`   ${value.Cantidad}`}
+                                            </Typography>
+                                        </>
+                                    }
+                                />
+
+                            </ListItem>
+
+                        </List>
+
+                        <List component="nav">
+                            <ListItem component="div" disablePadding>
+                                <ListItemText
+                                    secondary={
+                                        <>
+                                            <Typography
+                                                sx={{ display: 'inline' }}
+                                                component="span"
+                                                variant="body2"
+                                                color="text.primary"
+                                            >
+                                                Descripción:
+                                            </Typography>
+                                            {`   ${value.Descripcion}`}
+                                        </>
+                                    }
+                                />
+
+                            </ListItem>
+
+                        </List>
+
+                        <List component="nav">
+                            <ListItem component="div" disablePadding>
+                                <ListItemText
+                                    secondary={
+                                        <>
+                                            <Typography
+                                                sx={{ display: 'inline' }}
+                                                component="span"
+                                                variant="body2"
+                                                color="text.primary"
+                                            >
+                                                Importe:
+                                            </Typography>
+                                            {`   ${value.Importe}`}
+                                        </>
+                                    }
+                                />
+
+                            </ListItem>
+
+                        </List>
+
+                        <List component="nav">
+                            <ListItem component="div" disablePadding>
+                                <ListItemText
+                                    secondary={
+                                        <>
+                                            <Typography
+                                                sx={{ display: 'inline' }}
+                                                component="span"
+                                                variant="body2"
+                                                color="text.primary"
+                                            >
+                                                Valor Unitario:
+                                            </Typography>
+                                            {`   ${value.ValorUnitario}`}
+                                        </>
+                                    }
+                                />
+
+                            </ListItem>
+
+                        </List>
+
+                    </React.Fragment>
+                ))}
+
+
+
+
+            </React.Fragment>
+        )
+    }
+
+    console.log(form.conceptos.length)
     return (
         <>
             <div className="container">
@@ -408,7 +567,7 @@ export const Formulario = () => {
                             </CardContent>
                         </div>
 
-                        <div className="col-6">
+                        <div className="col-8">
                             {
                                 // Array.isArray(form.conceptos)
                                 //     ? <h2>Es un array</h2>
@@ -416,35 +575,24 @@ export const Formulario = () => {
                             }
                             <CardContent >
                                 <div className="row h6">
-                                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                                        <Text>Conceptos: </Text>
-                                        {form.conceptos.map((value) => (
-                                            <ListItem
-                                                key={value}
-                                                disableGutters
-                                                alignItems="flex-start"
-                                            >
-                                                <ListItemText
-                                                    primary="Brunch this weekend?"
-                                                    secondary={
-                                                        <>
-                                                            <Typography
-                                                                sx={{ display: 'inline' }}
-                                                                component="span"
-                                                                variant="body2"
-                                                                color="text.primary"
-                                                            >
-                                                                Cantidad
-                                                            </Typography>
-                                                            {" — I'll be in your neighborhood doing errands this…"}
-                                                        </>
-                                                    }
-                                                />
-                                                {/* <Divider variant="inset" component="li" /> */}
+                                    <Text>Conceptos: </Text>
 
-                                            </ListItem>
-                                        ))}
-                                    </List>
+
+
+                                    <FixedSizeList
+                                        // key={value}
+                                        height={250}
+                                        // width={650}
+                                        itemSize={46}
+                                        itemCount={form.conceptos.length}
+                                        // itemCount={0}
+                                        overscanCount={5}
+                                    >
+                                        {renderRow}
+                                        {/* {renderRow} */}
+
+                                    </FixedSizeList>
+
                                 </div>
                             </CardContent>
 
