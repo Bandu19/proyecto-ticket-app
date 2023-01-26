@@ -8,7 +8,7 @@ import { CardContent, Collapse, Grid, List, ListItem, ListItemButton, ListItemIc
 import Box from '@mui/material/Box';
 import { FixedSizeList } from "react-window";
 
-import { ExpandLess } from "@mui/icons-material"
+import { ExpandLess, ExpandMore } from "@mui/icons-material"
 import LooksOneOutlinedIcon from '@mui/icons-material/LooksOneOutlined';
 import LooksTwoOutlinedIcon from '@mui/icons-material/LooksTwoOutlined';
 
@@ -38,6 +38,12 @@ export const Formulario = () => {
         uuidaFac: ''
 
     })
+
+    const [open, setOpen] = useState(true);
+
+    const handleClick = () => {
+        setOpen(!open);
+      };
 
     useHideMenu(true)
 
@@ -529,9 +535,9 @@ export const Formulario = () => {
                                     <Box border={2} borderRadius={2} p={2}>
                                         <Title level={3}>Conceptos: </Title>
                                         <List component="nav">
-                                            <ListItemButton>
+                                            <ListItemButton onClick={handleClick}>                                               
 
-                                                <ExpandLess />
+                                                {open ? <ExpandLess /> : <ExpandMore />}
 
                                                 <ListItemIcon>
                                                     <LooksOneOutlinedIcon fontSize="large"/>
