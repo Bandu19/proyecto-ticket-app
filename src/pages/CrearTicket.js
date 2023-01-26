@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+// import { Button, Col, Row, Typography } from 'antd'
 import { Button, Col, Row} from 'antd'
 import { DownloadOutlined } from '@ant-design/icons'
 import { useHideMenu } from '../hooks/useHideMenu'
@@ -12,11 +13,11 @@ import { Link } from 'react-router-dom'
 export const CrearTicket = () => {
 
     // METODO DE OCULTAR MENU
-    // useHideMenu(true)
     useHideMenu(false)
 
     // USECONTEXT
     const { recibirFactura } = useContext(SocketContext)
+
 
     const [archivos, setArchivos] = useState('')
     
@@ -41,7 +42,6 @@ export const CrearTicket = () => {
 
         formData.append('magic-key', key);
         formData.append('xml-file', archivos);
-        
         try {
             const res = await axios.post("https://sea-lion-app-q3dmv.ondigitalocean.app/cfdi", formData, config)
             // console.log(res.data)
@@ -56,16 +56,14 @@ export const CrearTicket = () => {
 
      // HABILITAR Y DESABILITAR BUTTON
      const todoOk = () => {
-        return (archivos.type) ? true : false
+        return (archivos?.type) ? true : false
     }
 
     return (
         <>
             <Row>
                 <Col span={14} offset={6} align="center">
-
                     <input type='file' name='files' className='form-control form-control-lg' accept="text/xml" onChange={(e) => subirArchivos(e.target.files)} />
-                
                 </Col>
             </Row>
 
@@ -87,49 +85,7 @@ export const CrearTicket = () => {
                
                 </Col>
             </Row>
-
-
             <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-
-
-            {/* <Row>
-                <Col span={14} offset={6} align="center">
-
-                    <Title level={3}>
-                        Presione el boton para un nuevo ticket
-                    </Title>
-
-                    <Button
-                        type="primary"
-                        shape="round"
-                        icon={<DownloadOutlined />}
-                        size="large"
-                        onClick={nuevoTicket}
-                    >
-                        Nuevo Ticket
-                    </Button>
-
-                </Col>
-            </Row>
-
-            {
-                tickets && (
-                    <Row style={{ marginTop: 100 }}>
-                        <Col span={14} offset={6} align="center">
-
-                            <Text level={2}>
-                                Su número
-                            </Text>
-                            <br />
-
-                            <Text type="success" style={{ fontSize: 55 }}>
-                                {tickets.numero}
-                            </Text>
-
-                        </Col>
-                    </Row>
-                )
-            } */}
 
         </>
     )
