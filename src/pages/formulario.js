@@ -8,7 +8,7 @@ import { CardContent, Collapse, Grid, List, ListItem, ListItemButton, ListItemIc
 import Box from '@mui/material/Box';
 import { FixedSizeList } from "react-window";
 
-import { ExpandLess, ExpandMore } from "@mui/icons-material"
+import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material"
 import LooksOneOutlinedIcon from '@mui/icons-material/LooksOneOutlined';
 import LooksTwoOutlinedIcon from '@mui/icons-material/LooksTwoOutlined';
 
@@ -535,9 +535,9 @@ export const Formulario = () => {
                                     <Box border={2} borderRadius={2} p={2}>
                                         <Title level={3}>Conceptos: </Title>
                                         <List component="nav">
-                                            <ListItemButton onClick={handleClick}>                                               
+                                            <ListItemButton>                                               
 
-                                                {open ? <ExpandLess /> : <ExpandMore />}
+                                                <ExpandLess />
 
                                                 <ListItemIcon>
                                                     <LooksOneOutlinedIcon fontSize="large"/>
@@ -548,9 +548,9 @@ export const Formulario = () => {
                                                 />
                                             </ListItemButton>
 
-                                            <ListItemButton>
+                                            <ListItemButton onClick={handleClick}>
 
-                                                <ExpandLess />
+                                                {open ? <ExpandLess /> : <ExpandMore />}
 
                                                 <ListItemIcon>
                                                     <LooksTwoOutlinedIcon fontSize="large" />
@@ -561,7 +561,7 @@ export const Formulario = () => {
                                                 />
                                             </ListItemButton>
 
-                                            {/* <Collapse in={open} timeout="auto" unmountOnExit>
+                                            <Collapse in={open} timeout="auto" unmountOnExit>
                                                 <List component="div" disablePadding>
                                                     <ListItemButton sx={{ pl: 7 }}>
                                                         <ListItemIcon>
@@ -570,7 +570,7 @@ export const Formulario = () => {
                                                         <ListItemText primary="Starred" />
                                                     </ListItemButton>
                                                 </List>
-                                            </Collapse> */}
+                                            </Collapse>
                                         </List>
 
 
