@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-// import { Button, Col, Row, Typography } from 'antd'
 import { Button, Col, Row} from 'antd'
 import { DownloadOutlined } from '@ant-design/icons'
 import { useHideMenu } from '../hooks/useHideMenu'
@@ -7,9 +6,6 @@ import { SocketContext } from '../context/UiContext';
 
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { Grid } from '@mui/material';
-
-// const { Title, Text } = Typography
 
 export const CrearTicket = () => {
 
@@ -71,7 +67,6 @@ export const CrearTicket = () => {
             <Row>
                 <Col span={14} offset={6} align="center">
                     <br /><br />
-                    {/* <Grid item xs={5}> */}
 
                     <Link to="/formulario">
                         <Button
@@ -86,7 +81,6 @@ export const CrearTicket = () => {
                         </Button>
                     </Link>
                
-                            {/* </Grid> */}
                 </Col>
             </Row>
             <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
