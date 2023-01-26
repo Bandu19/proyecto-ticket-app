@@ -17,6 +17,7 @@ export const Formulario = () => {
     const [form, setForm] = useState({
         fecha: '',
         folio: '',
+        timbreFiscal:'',
         nombreEmisor: '',
         rfcEmisor: '',
         regimenFiscalEmisor: '',
@@ -30,6 +31,7 @@ export const Formulario = () => {
         uuidaFac: ''
 
     })
+
     // ** CAMBIAR TRUE
     const [open, setOpen] = useState(false)
     const [oper, setOper] = useState(false)
@@ -84,6 +86,7 @@ export const Formulario = () => {
             ...form,
             fecha: '',
             folio: '',
+            timbreFiscal:'',
             nombreEmisor: '',
             rfcEmisor: '',
             regimenFiscalEmisor: '',
@@ -92,6 +95,7 @@ export const Formulario = () => {
             usoCFDI_Receptor: '',
             conceptos: [],
             subtotal: '',
+            impuesto: '',
             total: '',
             uuidaFac: ''
         }))
@@ -110,160 +114,6 @@ export const Formulario = () => {
             console.log(error)
         }
     }
-
-    function renderRow(props) {
-        const { index } = props;
-
-        return (
-            <React.Fragment key={index}>
-
-                {form.conceptos.map((value, index) => (
-                    <React.Fragment key={index}>
-
-                        <List component="nav" >
-
-                            <ListItem component="div" disablePadding>
-                                <ListItemText
-                                    // primary="Cantidad:"
-                                    secondary={
-                                        <>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Clave Unidad:
-                                                {`   ${value.ClaveUnidad}`}
-                                            </Typography>
-                                        </>
-                                    }
-                                />
-
-                            </ListItem>
-                        </List>
-
-                        <List component="nav">
-                            <ListItem component="div" disablePadding>
-                                <ListItemText
-                                    // primary="Cantidad:"
-                                    secondary={
-                                        <>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Clave Provedor:
-                                                {`   ${value.ClaveProdServ}`}
-                                            </Typography>
-                                        </>
-                                    }
-                                />
-
-                            </ListItem>
-
-                        </List>
-                        <List component="nav">
-
-                            <ListItem component="div" disablePadding>
-                                <ListItemText
-                                    secondary={
-                                        <>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Cantidad:
-                                                {`   ${value.Cantidad}`}
-                                            </Typography>
-                                        </>
-                                    }
-                                />
-
-                            </ListItem>
-
-                        </List>
-
-                        <List component="nav">
-                            <ListItem component="div" disablePadding>
-                                <ListItemText
-                                    secondary={
-                                        <>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Descripción:
-                                            </Typography>
-                                            {`   ${value.Descripcion}`}
-                                        </>
-                                    }
-                                />
-
-                            </ListItem>
-
-                        </List>
-
-                        <List component="nav">
-                            <ListItem component="div" disablePadding>
-                                <ListItemText
-                                    secondary={
-                                        <>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Importe:
-                                            </Typography>
-                                            {`   ${value.Importe}`}
-                                        </>
-                                    }
-                                />
-
-                            </ListItem>
-
-                        </List>
-
-                        <List component="nav">
-                            <ListItem component="div" disablePadding>
-                                <ListItemText
-                                    secondary={
-                                        <>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Valor Unitario:
-                                            </Typography>
-                                            {`   ${value.ValorUnitario}`}
-                                        </>
-                                    }
-                                />
-
-                            </ListItem>
-
-                        </List>
-
-                    </React.Fragment>
-                ))}
-
-
-
-
-            </React.Fragment>
-        )
-    }
-
 
     return (
         <>
@@ -321,13 +171,12 @@ export const Formulario = () => {
                                                     error={false}
                                                     label="Folio"
                                                     type="text"
-                                                    name="fecha"
+                                                    name="folio"
                                                     margin="dense"
                                                     variant="outlined"
                                                     color="success"
                                                     value={form.folio}
                                                     onChange={onChange}
-                                                // helperText="Campo Obligatorio"
                                                 />
                                             </CardContent>
                                         </ListItem>
@@ -351,13 +200,13 @@ export const Formulario = () => {
                                                 error={false}
                                                 label="Timbre Fiscal: "
                                                 type="text"
-                                                name="fecha"
+                                                name="timbreFiscal"
                                                 variant="outlined"
                                                 fullWidth
                                                 color="success"
-                                                value={form.fecha}
+                                                value={form.timbreFiscal}
                                                 onChange={onChange}
-                                            // helperText="Campo Obligatorio"
+                                            
                                             />
                                         </ListItem>
                                     </List>
@@ -517,6 +366,7 @@ export const Formulario = () => {
                         </Grid>
 
                     </Grid>
+
                     <Divider />
 
                     <Grid container spacing={1} pb={2}>
@@ -618,7 +468,6 @@ export const Formulario = () => {
                                                                 {form.conceptos.map((row, index) => (
                                                                     <TableRow
                                                                         key={index}
-                                                                    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                                     >
                                                                         <TableCell scope="row">
                                                                             {row.Cantidad}
@@ -644,79 +493,114 @@ export const Formulario = () => {
                     </Grid>
 
                     <div className="row">
+                        <Grid container spacing={2} justifyContent="flex-end" pb={5}>
+                            <Grid item xs={12} sm={8} md={8} lg={5} >
+                            </Grid>
 
-                        <div className="col-4">
-                            <CardContent >
-                                <div className="row h6">
-                                    <Box my={0}>
-                                        <Grid container direction="row" spacing={2}>
-                                            <Text>Subtotal: </Text>
-                                            <TextField
-                                                error={false}
-                                                label="Subtotal"
-                                                type="text"
-                                                name="subtotal"
-                                                margin="dense"
-                                                variant="outlined"
-                                                fullWidth
-                                                color="success"
-                                                value={form.subtotal}
-                                                onChange={onChange}
-                                            />
-                                        </Grid>
-                                    </Box>
-                                </div>
-                            </CardContent>
+                            <Grid item xs={12} sm={12} md={8} lg={5} >
+                                <Box border={3} p={2}>
+                                    <Grid container direction="column" alignItems="flex-end">
+                                        <List >
+                                            <ListItem disablePadding alignItems="center">
+                                                <CardContent>
+                                                    <Title level={2}>Subtotal: </Title>
+                                                </CardContent>
 
-                            <CardContent >
-                                <div className="row h6">
-                                    <Box my={0}>
-                                        <Grid container direction="row" spacing={2}>
-                                            <Text>Impuesto: </Text>
-                                            <TextField
-                                                error={false}
-                                                label="Impuesto"
-                                                type="text"
-                                                name="impuesto"
-                                                margin="dense"
-                                                variant="outlined"
-                                                fullWidth
-                                                color="success"
-                                                value={form.impuesto}
-                                                onChange={onChange}
-                                            />
-                                        </Grid>
-                                    </Box>
-                                </div>
-                            </CardContent>
+                                                <CardContent >
+                                                    <div className="row h6">
+                                                        <Box my={0}>
+                                                            <Grid container direction="row" spacing={2}>
 
-                            <CardContent >
-                                <div className="row h6">
-                                    <Box my={0}>
-                                        <Grid container direction="row" spacing={2}>
-                                            <Text>Total: </Text>
-                                            <TextField
-                                                error={false}
-                                                label="Total"
-                                                type="text"
-                                                name="total"
-                                                margin="dense"
-                                                variant="outlined"
-                                                fullWidth
-                                                color="success"
-                                                value={form.total}
-                                                onChange={onChange}
-                                            />
-                                        </Grid>
-                                    </Box>
-                                </div>
-                            </CardContent>
-                        </div>
+                                                                <TextField
+                                                                    error={false}
+                                                                    label="Subtotal"
+                                                                    type="text"
+                                                                    name="subtotal"
+                                                                    margin="dense"
+                                                                    variant="outlined"
+                                                                    fullWidth
+                                                                    color="success"
+                                                                    value={form.subtotal}
+                                                                    onChange={onChange}
+                                                                />
+                                                            </Grid>
+                                                        </Box>
+                                                    </div>
+                                                </CardContent>
 
+                                            </ListItem>
+                                        </List>
 
+                                        <List >
+                                            <ListItem disablePadding alignItems="center">
+                                                <CardContent>
+                                                    <Title level={2}>Impuesto: </Title>
+                                                </CardContent>
 
+                                                <CardContent >
+                                                    <div className="row h6">
+                                                        <Box my={0}>
+                                                            <Grid container direction="row" spacing={2}>
+
+                                                                <TextField
+                                                                    error={false}
+                                                                    label="Subtotal"
+                                                                    type="text"
+                                                                    name="impuesto"
+                                                                    margin="dense"
+                                                                    variant="outlined"
+                                                                    fullWidth
+                                                                    color="success"
+                                                                    value={form.impuesto}
+                                                                    onChange={onChange}
+                                                                />
+                                                            </Grid>
+                                                        </Box>
+                                                    </div>
+                                                </CardContent>
+
+                                            </ListItem>
+                                        </List>
+
+                                        <List >
+                                            <ListItem disablePadding alignItems="center">
+                                                <CardContent>
+                                                    <Title level={2}>Total: </Title>
+                                                </CardContent>
+
+                                                <CardContent >
+                                                    <div className="row h6">
+                                                        <Box my={0}>
+                                                            <Grid container direction="row" spacing={2}>
+
+                                                                <TextField
+                                                                    error={false}
+                                                                    label="Total"
+                                                                    type="text"
+                                                                    name="total"
+                                                                    margin="dense"
+                                                                    variant="outlined"
+                                                                    fullWidth
+                                                                    color="success"
+                                                                    value={form.total}
+                                                                    onChange={onChange}
+                                                                />
+                                                            </Grid>
+                                                        </Box>
+                                                    </div>
+                                                </CardContent>
+
+                                            </ListItem>
+                                        </List>
+                                    </Grid>
+                                </Box>
+                            </Grid>
+
+                        </Grid>
                     </div>
                     <Divider />
+
+
 
                     <div className="col-6">
 
@@ -743,7 +627,7 @@ export const Formulario = () => {
                         </CardContent>
                     </div>
                     <br />
-                    <div className="text-center d-grid gap-2 col-6 mx-auto">
+                    <div className="text-center d-grid gap-2 col-4 mx-auto">
 
                         <button
                             className="btn btn-outline-success btn-lg"

@@ -7,6 +7,7 @@ import { SocketContext } from '../context/UiContext';
 
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { Grid } from '@mui/material';
 
 // const { Title, Text } = Typography
 
@@ -70,6 +71,8 @@ export const CrearTicket = () => {
             <Row>
                 <Col span={14} offset={6} align="center">
                     <br /><br />
+                    {/* <Grid item xs={5}> */}
+
                     <Link to="/formulario">
                         <Button
                             type="primary"
@@ -78,11 +81,12 @@ export const CrearTicket = () => {
                             size="large"
                             onClick={() => insertarArchivos()}
                             disabled={!todoOk()}
-                        >
+                            >
                             Insertar Archivos
                         </Button>
                     </Link>
                
+                            {/* </Grid> */}
                 </Col>
             </Row>
             <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
