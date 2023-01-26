@@ -13,6 +13,7 @@ const { Title, Text } = Typography;
 export const Formulario = () => {
 
     const { validando, factura } = useContext(SocketContext) /// DATA
+    console.log(factura)
 
     const [form, setForm] = useState({
         fecha: '',
@@ -43,6 +44,10 @@ export const Formulario = () => {
 
     const handleClick2 = () => {
         setOper(!oper);
+    }
+
+    const todoOk = () => {
+        return (form.timbreFiscal.length > 0 && form.impuesto.length >0) ? true : false
     }
 
     useHideMenu(true)
@@ -503,7 +508,7 @@ export const Formulario = () => {
                                         <List >
                                             <ListItem disablePadding alignItems="center">
                                                 <CardContent>
-                                                    <Title level={2}>Subtotal: </Title>
+                                                    <Title level={3}>Subtotal: </Title>
                                                 </CardContent>
 
                                                 <CardContent >
@@ -514,7 +519,7 @@ export const Formulario = () => {
                                                                 <TextField
                                                                     error={false}
                                                                     label="Subtotal"
-                                                                    type="text"
+                                                                    type="number"
                                                                     name="subtotal"
                                                                     margin="dense"
                                                                     variant="outlined"
@@ -534,7 +539,7 @@ export const Formulario = () => {
                                         <List >
                                             <ListItem disablePadding alignItems="center">
                                                 <CardContent>
-                                                    <Title level={2}>Impuesto: </Title>
+                                                    <Title level={3}>Impuesto: </Title>
                                                 </CardContent>
 
                                                 <CardContent >
@@ -565,7 +570,7 @@ export const Formulario = () => {
                                         <List >
                                             <ListItem disablePadding alignItems="center">
                                                 <CardContent>
-                                                    <Title level={2}>Total: </Title>
+                                                    <Title level={3}>Total: </Title>
                                                 </CardContent>
 
                                                 <CardContent >
@@ -576,7 +581,7 @@ export const Formulario = () => {
                                                                 <TextField
                                                                     error={false}
                                                                     label="Total"
-                                                                    type="text"
+                                                                    type="number"
                                                                     name="total"
                                                                     margin="dense"
                                                                     variant="outlined"
@@ -632,6 +637,7 @@ export const Formulario = () => {
                         <button
                             className="btn btn-outline-success btn-lg"
                             type="submit"
+                            disabled={!todoOk()}
 
                         >
                             Enviar
