@@ -1,26 +1,18 @@
-import { Divider, Typography } from "antd";
+import React, { useContext, useEffect, useState } from "react";
 import { useHideMenu } from "../hooks/useHideMenu"
 import { SocketContext } from '../context/UiContext';
-import React, { useContext, useEffect, useState } from "react";
+import { Divider, Typography } from "antd";
 import axios from "axios";
-// import ArticleIcon from '@mui/icons-material/Article';
-import { CardContent, Collapse, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, } from "@mui/material";
+import { CardContent, Collapse, Grid, List, ListItem, ListItemButton, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, } from "@mui/material";
 import Box from '@mui/material/Box';
-import { FixedSizeList } from "react-window";
 
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material"
-import LooksOneOutlinedIcon from '@mui/icons-material/LooksOneOutlined';
-import LooksTwoOutlinedIcon from '@mui/icons-material/LooksTwoOutlined';
-
+import { ExpandMore, KeyboardArrowRight } from "@mui/icons-material"
 
 const { Title, Text } = Typography;
 
 export const Formulario = () => {
 
     const { validando, factura } = useContext(SocketContext) /// DATA
-    console.log(factura)
-    // UseState
-    // const inputRef = useRef(null);
 
     const [form, setForm] = useState({
         fecha: '',
@@ -38,12 +30,18 @@ export const Formulario = () => {
         uuidaFac: ''
 
     })
+    // ** CAMBIAR TRUE
+    const [open, setOpen] = useState(false)
+    const [oper, setOper] = useState(false)
 
-    const [open, setOpen] = useState(true);
 
     const handleClick = () => {
         setOpen(!open);
-      };
+    }
+
+    const handleClick2 = () => {
+        setOper(!oper);
+    }
 
     useHideMenu(true)
 
@@ -266,6 +264,7 @@ export const Formulario = () => {
         )
     }
 
+
     return (
         <>
             <div className="container">
@@ -372,10 +371,8 @@ export const Formulario = () => {
                     <Grid container spacing={2} pb={2}>
 
                         <Grid item xs={12} sm={12} md={6} lg={6} >
-                            <Box border={2} borderRadius={2} p={2}>
-                                {/* <Box border={1} borderRadius={2} textAlign="center"> */}
+                            <Box border={3} p={2}>
                                 <Title level={3}>Emisor</Title>
-                                {/* </Box>     */}
                                 <Divider />
 
                                 <CardContent >
@@ -447,7 +444,7 @@ export const Formulario = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={6} lg={6}>
-                            <Box border={2} borderRadius={2} p={2}>
+                            <Box border={3} p={2}>
                                 <Title level={3}>Receptor</Title>
                                 <Divider />
 
@@ -529,56 +526,118 @@ export const Formulario = () => {
                                 //     ? <h2>Es un array</h2>
                                 //     : <h2>No un array</h2>
                             }
-
                             <CardContent >
                                 <div className="row ">
-                                    <Box border={2} borderRadius={2} p={2}>
+                                    <Box border={3} p={2}>
                                         <Title level={3}>Conceptos: </Title>
+                                        <Divider />
                                         <List component="nav">
-                                            <ListItemButton>                                               
 
-                                                <ExpandLess />
-
-                                                <ListItemIcon>
-                                                    <LooksOneOutlinedIcon fontSize="large"/>
-                                                </ListItemIcon>
+                                            <ListItemButton onClick={handleClick2}>
+                                                {oper ? <ExpandMore /> : <KeyboardArrowRight />}
 
                                                 <ListItemText
-                                                    primary="Materiales de construction para vivi..."
+                                                    secondary={
+                                                        <>
+                                                            <Typography
+                                                                sx={{ display: 'inline' }}
+                                                                component="span"
+                                                                variant="body2"
+                                                                color="text.primary"
+                                                            >
+                                                                1 &nbsp;
+                                                            </Typography>
+
+                                                            <Typography
+                                                                sx={{ display: 'inline' }}
+                                                                component="span"
+                                                                variant="body2"
+                                                                color="text.primary"
+                                                            >
+                                                                Materiales de construcción para vivi....
+                                                            </Typography>
+
+                                                        </>
+                                                    }
                                                 />
                                             </ListItemButton>
 
+                                            <Collapse in={oper} timeout="auto" unmountOnExit>
+                                                <List disablePadding>
+                                                </List>
+                                            </Collapse>
+
+
                                             <ListItemButton onClick={handleClick}>
-
-                                                {open ? <ExpandLess /> : <ExpandMore />}
-
-                                                <ListItemIcon>
-                                                    <LooksTwoOutlinedIcon fontSize="large" />
-                                                </ListItemIcon>
+                                                {open ? <ExpandMore /> : <KeyboardArrowRight />}
 
                                                 <ListItemText
-                                                    primary="Fabricación de piezzas segun mues..."
+                                                    secondary={
+                                                        <>
+                                                            <Typography
+                                                                sx={{ display: 'inline' }}
+                                                                component="span"
+                                                                variant="body2"
+                                                                color="text.primary"
+                                                            >
+                                                                2 &nbsp;
+                                                            </Typography>
+
+                                                            <Typography
+                                                                sx={{ display: 'inline' }}
+                                                                component="span"
+                                                                variant="body2"
+                                                                color="text.primary"
+                                                            >
+                                                                Fabricación de piezzas segun mues...
+                                                            </Typography>
+
+                                                        </>
+                                                    }
                                                 />
+
                                             </ListItemButton>
 
                                             <Collapse in={open} timeout="auto" unmountOnExit>
                                                 <List component="div" disablePadding>
-                                                    <ListItemButton sx={{ pl: 7 }}>
-                                                        <ListItemIcon>
-                                                            <StarBorder />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary="Starred" />
-                                                    </ListItemButton>
+                                                    {/* **TODO: TABLAS */}
+                                                    <TableContainer component={Paper} sx={{ pl: 3, height: 256 }}>
+
+                                                        <Table sx={{ minWidth: 650 }} >
+
+                                                            <TableHead>
+                                                                <TableRow>
+                                                                    <TableCell>Cantidad</TableCell>
+                                                                    <TableCell>Descripción</TableCell>
+                                                                    <TableCell>Valor Unitario</TableCell>
+                                                                    <TableCell>Importe</TableCell>
+                                                                </TableRow>
+                                                            </TableHead>
+
+                                                            <TableBody >
+                                                                {form.conceptos.map((row, index) => (
+                                                                    <TableRow
+                                                                        key={index}
+                                                                    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                                    >
+                                                                        <TableCell scope="row">
+                                                                            {row.Cantidad}
+                                                                        </TableCell>
+                                                                        <TableCell component="th" scope="row">{row.Descripcion}</TableCell>
+                                                                        <TableCell>${row.ValorUnitario}</TableCell>
+                                                                        <TableCell>${row.Importe}</TableCell>
+
+                                                                    </TableRow>
+                                                                ))}
+                                                            </TableBody>
+                                                        </Table>
+                                                    </TableContainer>
                                                 </List>
                                             </Collapse>
                                         </List>
-
-
-                                       
                                     </Box>
                                 </div>
                             </CardContent>
-
                         </div>
 
                         <Divider />
