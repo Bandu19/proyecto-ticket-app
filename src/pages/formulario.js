@@ -18,7 +18,7 @@ export const Formulario = () => {
     const [form, setForm] = useState({
         fecha: '',
         folio: '',
-        timbreFiscal:'',
+        timbreFiscal: '',
         nombreEmisor: '',
         rfcEmisor: '',
         regimenFiscalEmisor: '',
@@ -46,16 +46,14 @@ export const Formulario = () => {
         setOper(!oper);
     }
 
-    const todoOk = () => {
-        return (form.timbreFiscal.length > 0 && form.impuesto.length >0) ? true : false
-    }
-
+   
     useHideMenu(true)
 
     console.log(form)
 
     useEffect(() => {
 
+        // Obtienes la Data
         if (validando) {
             setForm((form) => ({
                 ...form,
@@ -75,6 +73,8 @@ export const Formulario = () => {
         }
     }, [validando, factura])
 
+    
+    // ** Cambias el target Inputs
     const onChange = ({ target }) => {
         const { name, value } = target
         setForm({
@@ -83,38 +83,46 @@ export const Formulario = () => {
         })
     }
 
+   
 
     const onSubmit = async (ev) => {
         ev.preventDefault();
         console.log(form)
-        setForm((form) => ({
-            ...form,
-            fecha: '',
-            folio: '',
-            timbreFiscal:'',
-            nombreEmisor: '',
-            rfcEmisor: '',
-            regimenFiscalEmisor: '',
-            nombreReceptor: '',
-            rfcReceptor: '',
-            usoCFDI_Receptor: '',
-            conceptos: [],
-            subtotal: '',
-            impuesto: '',
-            total: '',
-            uuidaFac: ''
-        }))
+        
         const config = {
             headers: {
-                'Accept': 'application/json'
+                // 'Accept': 'application/json'
+                'Content-Type': 'multipart/form-data'
+
             }
         }
 
         try {
-            const res = await axios.post("http://localhost:8080/", form, config)
-            console.log(res.data)
-            // ** DEVOLVER ESTADO EN USECONTEXT
+           
 
+            const formData = new FormData();
+
+            const key = "f9c54ed6-d851-4772-9e9d-7bd75da75467"
+            const folio= form.uuidaFac
+
+            formData.append('folio_fiscal', form?.uuidaFac);
+            formData.append('emisor_nombre', form?.nombreEmisor);
+            formData.append('emisor_rfc', form?.rfcEmisor);
+            formData.append('emisor_regimen_fiscal', form?.regimenFiscalEmisor);
+            formData.append('receptor_nombre', form?.nombreReceptor);
+            formData.append('receptor_rfc', form?.rfcReceptor);
+            formData.append('receptor_uso_cfdi', form?.usoCFDI_Receptor);
+            formData.append('fecha', form?.fecha);
+            formData.append('folio', form?.folio);
+            formData.append('subtotal', form?.subtotal);
+            formData.append('total', form?.total);
+            formData.append('magic-key', key);
+            
+            
+
+            const res = await axios.post(`https://dolphin-app-2p6gu.ondigitalocean.app/cfdi?magic-key=${key}&folio_fiscal=${folio}`, formData, config)
+            console.log(res.data)
+        
         } catch (error) {
             console.log(error)
         }
@@ -205,13 +213,13 @@ export const Formulario = () => {
                                                 error={false}
                                                 label="Timbre Fiscal: "
                                                 type="text"
-                                                name="timbreFiscal"
+                                                name="uuidaFac"
                                                 variant="outlined"
                                                 fullWidth
                                                 color="success"
-                                                value={form.timbreFiscal}
+                                                value={form.uuidaFac}
                                                 onChange={onChange}
-                                            
+
                                             />
                                         </ListItem>
                                     </List>
@@ -637,7 +645,7 @@ export const Formulario = () => {
                         <button
                             className="btn btn-outline-success btn-lg"
                             type="submit"
-                            disabled={!todoOk()}
+                        // disabled={!todoOk()}
 
                         >
                             Enviar

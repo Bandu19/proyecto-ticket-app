@@ -17,12 +17,12 @@ export const CrearTicket = () => {
 
 
     const [archivos, setArchivos] = useState('')
-    
     // ** FUNCION INPUT
     const subirArchivos = (e) => {
         console.log(e)
         setArchivos(e[0])
     }
+    
 
     // ** FUNCION BUTTON
     const insertarArchivos = async () => {
@@ -40,7 +40,7 @@ export const CrearTicket = () => {
         formData.append('magic-key', key);
         formData.append('xml-file', archivos);
         try {
-            const res = await axios.post("https://sea-lion-app-q3dmv.ondigitalocean.app/cfdi", formData, config)
+            const res = await axios.post("https://dolphin-app-2p6gu.ondigitalocean.app/cfdi/read", formData, config)
             // console.log(res.data)
             //** DEVOLVER ESTADO EN USECONTEXT
             recibirFactura(res.data)
