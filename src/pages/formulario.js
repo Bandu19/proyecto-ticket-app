@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react"
 import { useHideMenu } from "../hooks/useHideMenu"
-import { SocketContext } from '../context/UiContext';
-import { Divider, Typography } from "antd";
-import axios from "axios";
-import { CardContent, Collapse, Grid, List, ListItem, ListItemButton, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, } from "@mui/material";
-import Box from '@mui/material/Box';
+import { SocketContext } from '../context/UiContext'
+import { Divider, Typography } from "antd"
+import axios from "axios"
+import { CardContent, Collapse, Grid, List, ListItem, ListItemButton, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, } from "@mui/material"
+import Box from '@mui/material/Box'
 
 import { ExpandMore, KeyboardArrowRight } from "@mui/icons-material"
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 export const Formulario = () => {
 
@@ -39,11 +39,11 @@ export const Formulario = () => {
 
 
     const handleClick = () => {
-        setOpen(!open);
+        setOpen(!open)
     }
 
     const handleClick2 = () => {
-        setOper(!oper);
+        setOper(!oper)
     }
 
    
@@ -86,8 +86,27 @@ export const Formulario = () => {
    
 
     const onSubmit = async (ev) => {
-        ev.preventDefault();
+        ev.preventDefault()
         console.log(form)
+
+        setForm((form) => ({
+
+            ...form,
+            fecha: '',
+            folio: '',
+            timbreFiscal:'',
+            nombreEmisor: '',
+            rfcEmisor: '',
+            regimenFiscalEmisor: '',
+            nombreReceptor: '',
+            rfcReceptor: '',
+            usoCFDI_Receptor: '',
+            conceptos: [],
+            subtotal: '',
+            impuesto: '',
+            total: '',
+            uuidaFac: ''
+        }))
         
         const config = {
             headers: {
@@ -98,29 +117,27 @@ export const Formulario = () => {
         }
 
         try {
-           
-
-            const formData = new FormData();
+            const formData = new FormData()
 
             const key = "f9c54ed6-d851-4772-9e9d-7bd75da75467"
             const folio= form.uuidaFac
 
-            formData.append('folio_fiscal', form?.uuidaFac);
-            formData.append('emisor_nombre', form?.nombreEmisor);
-            formData.append('emisor_rfc', form?.rfcEmisor);
-            formData.append('emisor_regimen_fiscal', form?.regimenFiscalEmisor);
-            formData.append('receptor_nombre', form?.nombreReceptor);
-            formData.append('receptor_rfc', form?.rfcReceptor);
-            formData.append('receptor_uso_cfdi', form?.usoCFDI_Receptor);
-            formData.append('fecha', form?.fecha);
-            formData.append('folio', form?.folio);
-            formData.append('subtotal', form?.subtotal);
-            formData.append('total', form?.total);
-            formData.append('magic-key', key);
-            
-            
+            formData.append('folio_fiscal', form?.uuidaFac)
+            formData.append('emisor_nombre', form?.nombreEmisor)
+            formData.append('emisor_rfc', form?.rfcEmisor)
+            formData.append('emisor_regimen_fiscal', form?.regimenFiscalEmisor)
+            formData.append('receptor_nombre', form?.nombreReceptor)
+            formData.append('receptor_rfc', form?.rfcReceptor)
+            formData.append('receptor_uso_cfdi', form?.usoCFDI_Receptor)
+            formData.append('fecha', form?.fecha)
+            formData.append('folio', form?.folio)
+            formData.append('subtotal', form?.subtotal)
+            formData.append('total', form?.total)
+            formData.append('magic-key', key)
 
             const res = await axios.post(`https://dolphin-app-2p6gu.ondigitalocean.app/cfdi?magic-key=${key}&folio_fiscal=${folio}`, formData, config)
+            
+            
             console.log(res.data)
         
         } catch (error) {
@@ -408,7 +425,7 @@ export const Formulario = () => {
                                                                 variant="body2"
                                                                 color="text.primary"
                                                             >
-                                                                1 &nbsp;
+                                                                1 &nbsp
                                                             </Typography>
 
                                                             <Typography
@@ -443,7 +460,7 @@ export const Formulario = () => {
                                                                 variant="body2"
                                                                 color="text.primary"
                                                             >
-                                                                2 &nbsp;
+                                                                2 &nbsp
                                                             </Typography>
 
                                                             <Typography
@@ -478,7 +495,7 @@ export const Formulario = () => {
                                                             </TableHead>
 
                                                             <TableBody >
-                                                                {form.conceptos.map((row, index) => (
+                                                                {form?.conceptos.map((row, index) => (
                                                                     <TableRow
                                                                         key={index}
                                                                     >
