@@ -154,6 +154,7 @@ export const Formulario = () => {
                 <form
                     onSubmit={onSubmit}
                 >
+                    {/* Vista Fecha, Folio y Timbre Fiscal */}
                     <Grid container spacing={2} justifyContent="center" alignItems="center" pb={5}>
 
                         <Grid item xs={12} sm={8} md="auto" lg={4}>
@@ -246,7 +247,8 @@ export const Formulario = () => {
                         </Grid>
 
                     </Grid>
-
+                    
+                    {/* Vista Emisor y Receptor */}
                     <Grid container spacing={2} pb={2}>
 
                         <Grid item xs={12} sm={12} md={6} lg={6} >
@@ -399,6 +401,7 @@ export const Formulario = () => {
 
                     <Divider />
 
+                    {/* Vista conceptos */}
                     <Grid container spacing={1} pb={2}>
                         <div className="col-12">
                             {
@@ -425,7 +428,7 @@ export const Formulario = () => {
                                                                 variant="body2"
                                                                 color="text.primary"
                                                             >
-                                                                1 &nbsp
+                                                                1 &nbsp;
                                                             </Typography>
 
                                                             <Typography
@@ -460,7 +463,7 @@ export const Formulario = () => {
                                                                 variant="body2"
                                                                 color="text.primary"
                                                             >
-                                                                2 &nbsp
+                                                                2 &nbsp;
                                                             </Typography>
 
                                                             <Typography
@@ -519,9 +522,9 @@ export const Formulario = () => {
                             </CardContent>
                         </div>
 
-                        <Divider />
                     </Grid>
 
+                    {/* Vista Subtotal,impuesto y Total*/}
                     <div className="row">
                         <Grid container spacing={2} justifyContent="flex-end" pb={5}>
                             <Grid item xs={12} sm={8} md={8} lg={5} >
@@ -628,37 +631,11 @@ export const Formulario = () => {
 
                         </Grid>
                     </div>
-                    <Divider />
+                    
 
 
 
-                    <div className="col-6">
-
-                        <CardContent >
-                            <div className="row h6">
-                                <Box my={0}>
-                                    <Grid container direction="row" spacing={2}>
-                                        <Text>UUID: </Text>
-                                        <TextField
-                                            error={false}
-                                            label="UUID"
-                                            type="text"
-                                            name="uuidaFac"
-                                            margin="dense"
-                                            variant="outlined"
-                                            fullWidth
-                                            color="success"
-                                            value={form.uuidaFac}
-                                            onChange={onChange}
-                                        />
-                                    </Grid>
-                                </Box>
-                            </div>
-                        </CardContent>
-                    </div>
-                    <br />
                     <div className="text-center d-grid gap-2 col-4 mx-auto">
-
                         <button
                             className="btn btn-outline-success btn-lg"
                             type="submit"
