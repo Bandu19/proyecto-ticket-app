@@ -174,7 +174,7 @@ export const Formulario = () => {
                                                     name="fecha"
                                                     margin="dense"
                                                     variant="outlined"
-
+                                                    disabled
                                                     color="success"
                                                     value={form.fecha}
                                                     onChange={onChange}
@@ -203,6 +203,7 @@ export const Formulario = () => {
                                                     label="Folio"
                                                     type="text"
                                                     name="folio"
+                                                    disabled
                                                     margin="dense"
                                                     variant="outlined"
                                                     color="success"
@@ -229,6 +230,7 @@ export const Formulario = () => {
                                                 margin="dense"
                                                 pt={0}
                                                 error={false}
+                                                disabled
                                                 label="Timbre Fiscal: "
                                                 type="text"
                                                 name="uuidaFac"
@@ -266,6 +268,7 @@ export const Formulario = () => {
                                                     label="Nombre del emisor"
                                                     type="text"
                                                     name="nombreEmisor"
+                                                    disabled
                                                     margin="dense"
                                                     variant="outlined"
                                                     fullWidth
@@ -285,6 +288,7 @@ export const Formulario = () => {
                                                 <Text>RFC: </Text>
                                                 <TextField
                                                     error={false}
+                                                    disabled
                                                     label="RFC del Emisor"
                                                     type="text"
                                                     name="rfcEmisor"
@@ -307,6 +311,7 @@ export const Formulario = () => {
                                                 <Text>Regimen Fiscal: </Text>
                                                 <TextField
                                                     error={false}
+                                                    disabled
                                                     label="RFC del Emisor"
                                                     type="text"
                                                     name="regimenFiscalEmisor"
@@ -336,6 +341,7 @@ export const Formulario = () => {
                                                 <Text>Nombre: </Text>
                                                 <TextField
                                                     error={false}
+                                                    disabled
                                                     label="Nombre del Receptor"
                                                     type="text"
                                                     name="nombreReceptor"
@@ -358,6 +364,7 @@ export const Formulario = () => {
                                                 <Text>RFC: </Text>
                                                 <TextField
                                                     error={false}
+                                                    disabled
                                                     label="RFC del Receptor"
                                                     type="text"
                                                     name="rfcReceptor"
@@ -380,6 +387,7 @@ export const Formulario = () => {
                                                 <Text>Uso CFDI: </Text>
                                                 <TextField
                                                     error={false}
+                                                    disabled
                                                     label="CFDI"
                                                     type="text"
                                                     name="usoCFDI_Receptor"
@@ -546,6 +554,7 @@ export const Formulario = () => {
 
                                                                 <TextField
                                                                     error={false}
+                                                                    disabled
                                                                     label="Subtotal"
                                                                     type="number"
                                                                     name="subtotal"
@@ -577,6 +586,7 @@ export const Formulario = () => {
 
                                                                 <TextField
                                                                     error={false}
+                                                                    disabled
                                                                     label="Subtotal"
                                                                     type="text"
                                                                     name="impuesto"
@@ -612,6 +622,7 @@ export const Formulario = () => {
                                                                     type="number"
                                                                     name="total"
                                                                     margin="dense"
+                                                                    disabled
                                                                     variant="outlined"
                                                                     fullWidth
                                                                     color="success"

@@ -1,68 +1,72 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Button } from 'antd'
-import { DownloadOutlined } from '@ant-design/icons'
 import { useHideMenu } from '../hooks/useHideMenu'
 import { SocketContext } from '../context/UiContext';
-import { Typography, Divider } from "antd"
+import { Typography} from "antd"
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import {useNavigate}  from 'react-router-dom'
 import { Box, CardContent, Grid, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
-// import { Title } from '@mui/icons-material';
-// import { MuiFileInput } from 'mui-file-input';
-// import { useDispatch } from 'react-redux';
-// import { getFacturas } from '../store/facturas/trunks';
+
 
 export const CrearTicket = () => {
 
-    const { Title, Text } = Typography
+    const { Title } = Typography
 
     // METODO DE OCULTAR MENU
     useHideMenu(true)
 
     // USECONTEXT
+    const history = useNavigate()
+    
     const { recibirFactura } = useContext(SocketContext)
-
 
     const [archivos, setArchivos] = useState('')
 
     // ** FUNCION INPUT
-    const subirArchivos = (e) => {
-        console.log(e)
+    const subirArchivos = async(e) => {
+        console.log(e[0])
         setArchivos(e[0])
     }
 
+    useEffect(() => {
+       if(archivos.type){
+        insertarArchivos()
+       }
+    }, [archivos])
+    
 
     // ** FUNCION BUTTON
     const insertarArchivos = async () => {
 
-        // const config = {
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //         // 'Accept': 'application/json'
-        //     }
-        // }
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                // 'Accept': 'application/json'
+            }
+        }
 
-        // const formData = new FormData();
-        // const key = "f9c54ed6-d851-4772-9e9d-7bd75da75467"
+        const formData = new FormData();
+        const key = "f9c54ed6-d851-4772-9e9d-7bd75da75467"
 
-        // formData.append('magic-key', key);
-        // formData.append('xml-file', archivos);
+        formData.append('magic-key', key);
+        formData.append('xml-file', archivos);
 
-        // try {
-        //     const res = await axios.post("https://dolphin-app-2p6gu.ondigitalocean.app/cfdi/read", formData, config)
-        //     // console.log(res.data)
-        //     //** DEVOLVER ESTADO EN USECONTEXT
-        //     recibirFactura(res.data)
+        try {
+           
+
+            const res = await axios.post("https://dolphin-app-2p6gu.ondigitalocean.app/cfdi/read", formData, config)
+            console.log(res.data)
+            //** DEVOLVER ESTADO EN USECONTEXT
+            recibirFactura(res.data)
+            history('/formulario')
 
 
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        } catch (error) {
+            console.log(error)
+        }
     }
-
     
-    
-
+    //  DETALLE API GET /https://dolphin-app-2p6gu.ondigitalocean.app/cfdi
     const prueba= async()=>{
     
         
@@ -196,6 +200,7 @@ export const CrearTicket = () => {
 
                                             </List>
                                         </Grid>
+                                        
                                         <Grid item lg={3}>
                                             <List component="nav">
                                                 <ListItem disablePadding>
@@ -222,15 +227,23 @@ export const CrearTicket = () => {
                                                 <ListItem disablePadding>
 
                                                     <CardContent >
-                                                        <Button
+                                                        {/* <Button
                                                             variant="contained"
                                                             size="large"
                                                             onClick={()=>prueba()}
-
-
                                                         >
                                                             CARGAR
-                                                        </Button>
+                                                        </Button> */}
+                                                        
+
+                                                        <input 
+                                                            type="file" 
+                                                            name="files" 
+                                                            className='form-control form-control-lg' 
+                                                            accept='text/xml'
+                                                            onChange={(e)=>subirArchivos(e.target.files)}
+                                                        />
+                                                    
                                                     </CardContent>
                                                 </ListItem>
 
@@ -295,19 +308,6 @@ export const CrearTicket = () => {
                     </div>
                 </Grid>
 
-
-                <Link to="/formulario">
-                    <Button
-                        type="primary"
-                        shape="round"
-                        icon={<DownloadOutlined />}
-                        size="large"
-                        onClick={() => insertarArchivos()}
-                        disabled={!todoOk()}
-                    >
-                        Insertar Archivos
-                    </Button>
-                </Link>
             </div>
 
 
