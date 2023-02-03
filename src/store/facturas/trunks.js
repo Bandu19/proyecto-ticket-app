@@ -1,6 +1,6 @@
 import axios from "axios"
 // import { pokemonApi } from "../../api/pokemonApi"
-import { setFacturas, starLoadingFacturas } from "./facturasSlice"
+import { starLoadingFacturas } from "./facturasSlice"
 
 
 
@@ -14,17 +14,12 @@ export const getFacturas = () => {
         // const data = await resp.json()
         const config = {
             headers: {
-                'Accept': 'application/json'
-                // 'Content-Type': 'multipart/form-data'
-
+                // 'Accept': 'application/json',
+                'magic-key': 'f9c54ed6-d851-4772-9e9d-7bd75da75467'
             }
         }
-        const formData = new FormData()
 
-        const key = "f9c54ed6-d851-4772-9e9d-7bd75da75467"
-        formData.append('magic-key', key)
-        
-        await axios.get('https://dolphin-app-2p6gu.ondigitalocean.app/cfdi',formData,config)
+        await axios.get('https://dolphin-app-2p6gu.ondigitalocean.app/cfdi',config)
             .then(response => {
                 // setData(response.data);
                 console.log(response.data);

@@ -1,12 +1,12 @@
+import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { Button } from 'antd'
 import { useHideMenu } from '../hooks/useHideMenu'
 import { SocketContext } from '../context/UiContext';
-import { Typography} from "antd"
-import axios from 'axios'
-import {useNavigate}  from 'react-router-dom'
-import { Box, CardContent, Grid, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
-
+import { Typography } from "antd"
+import { useNavigate } from 'react-router-dom'
+import { Box, CardContent, Grid, List, ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+// import { useDispatch } from 'react-redux';
+// import {getFacturas} from '../store/facturas/trunks'
 
 export const CrearTicket = () => {
 
@@ -17,42 +17,44 @@ export const CrearTicket = () => {
 
     // USECONTEXT
     const history = useNavigate()
-    
+
     const { recibirFactura } = useContext(SocketContext)
 
     const [archivos, setArchivos] = useState('')
 
     // ** FUNCION INPUT
-    const subirArchivos = async(e) => {
+    const subirArchivos = async (e) => {
         console.log(e[0])
         setArchivos(e[0])
     }
 
     useEffect(() => {
-       if(archivos.type){
-        insertarArchivos()
-       }
+        if (archivos?.type) {
+            insertarArchivos()
+        }
+
     }, [archivos])
-    
 
     // ** FUNCION BUTTON
     const insertarArchivos = async () => {
-
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                // 'Accept': 'application/json'
-            }
-        }
 
         const formData = new FormData();
         const key = "f9c54ed6-d851-4772-9e9d-7bd75da75467"
 
         formData.append('magic-key', key);
-        formData.append('xml-file', archivos);
+        formData.append('xml-file', archivos)
+
+        console.log(formData)
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'magic-key': 'f9c54ed6-d851-4772-9e9d-7bd75da75467'
+                // 'Accept': 'application/json'
+            }
+        }
 
         try {
-           
 
             const res = await axios.post("https://dolphin-app-2p6gu.ondigitalocean.app/cfdi/read", formData, config)
             console.log(res.data)
@@ -65,107 +67,84 @@ export const CrearTicket = () => {
             console.log(error)
         }
     }
-    
-    //  DETALLE API GET /https://dolphin-app-2p6gu.ondigitalocean.app/cfdi
-    const prueba= async()=>{
-    
-        
-        try {
-            const formData = new FormData();
-            const key = "f9c54ed6-d851-4772-9e9d-7bd75da75467"
-            console.log(key)
-            
-            formData.append('magic-key', key);
 
-            await axios.get('https://dolphin-app-2p6gu.ondigitalocean.app/cfdi',formData,{headers: {
-                'Content-Type': 'multipart/form-data'
-                }})
-                .then(response=>{
-                console.log(response.data);
-            })
-                .catch(error=>{
-                console.log("gu", error)
-            })
-        
-        } catch (error) {
-            console.log("dtdt", error)
+    // const makeGetRequest = async () => {
+    //     try {
+
+    //         const config = {
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'magic-key': 'f9c54ed6-d851-4772-9e9d-7bd75da75467'
+    //             }
+    //         }
+
+    //         await axios.get('http://localhost:8080/cfdi',config)
+    //             .then(response => {
+    //                 console.log(response.data)
+    //             })
+    //             .catch(error => {
+    //                 console.log(error)
+    //             })
+    //     }
+
+    //     catch (error) {
+    //         console.error(error);
+    //     }
+    // };
+
+    const key = 'f9c54ed6-d851-4772-9e9d-7bd75da75467' 
+
+    const config = {
+        headers: {
+            // 'Accept': 'application/json',
+            // 'Access-Control-Allow-Credentials': 'true',
+            // 'Access-Control-Allow-Origin': 'http://localhost:8080/cfdi',
+            // 'Access-Control-Allow-Headers': 'Content-type',
+            // 'Access-Control-Allow-Methods': 'GET',
+            'magic-key': key                
+        }
+    }
+    const peticionGet = async() =>{
+        try {
+            
+             await axios.get('/cfdi',{
+                headers:{
+                    'magic-key': key  
+                }
+             })
+                .then(response => {
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+
+                console.log()
+
+
+            // const response = await fetch('http://localhost:8080/cfdi',{
+            //     'mode': 'no-cors',
+            //     'headers':{
+            //         'Access-Control-Allow-Origin': 'http://localhost:8080/cfdi',
+            //         'Access-Control-Allow-Headers': 'Content-Type',
+            //         "Access-Control-Allow-Methods": "GET",
+            //         'magic-key': 'f9c54ed6-d851-4772-9e9d-7bd75da75467'
+
+            //     }
+            // })
+            // console.log(response)
+        }
+
+        catch (error) {
+            console.log(`(http://localhost:8080/cfdi).${(config)}`)
         }
     }
 
-    // HABILITAR Y DESABILITAR BUTTON
-    const todoOk = () => {
-        return (archivos?.type) ? true : false
-    }
-
-    const columns = [
-        { id: 'name', label: 'Name', minWidth: 170 },
-        { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-        {
-            id: 'population',
-            label: 'Population',
-            minWidth: 170,
-            align: 'right',
-            format: (value) => value.toLocaleString('en-US'),
-        },
-        {
-            id: 'size',
-            label: 'Size\u00a0(km\u00b2)',
-            minWidth: 170,
-            align: 'right',
-            format: (value) => value.toLocaleString('en-US'),
-        },
-        {
-            id: 'density',
-            label: 'Density',
-            minWidth: 170,
-            align: 'right',
-            format: (value) => value.toFixed(2),
-        },
-    ];
-
-    function createData(name, code, population, size) {
-        const density = population / size;
-        return { name, code, population, size, density };
-    }
-
-    const rows = [
-        createData('India', 'IN', 1324171354, 3287263),
-        createData('China', 'CN', 1403500365, 9596961),
-        createData('Italy', 'IT', 60483973, 301340),
-        createData('United States', 'US', 327167434, 9833520),
-        createData('Canada', 'CA', 37602103, 9984670),
-        createData('Australia', 'AU', 25475400, 7692024),
-        createData('Germany', 'DE', 83019200, 357578),
-        createData('Ireland', 'IE', 4857000, 70273),
-        createData('Mexico', 'MX', 126577691, 1972550),
-        createData('Japan', 'JP', 126317000, 377973),
-        createData('France', 'FR', 67022000, 640679),
-        createData('United Kingdom', 'GB', 67545757, 242495),
-        createData('Russia', 'RU', 146793744, 17098246),
-        createData('Nigeria', 'NG', 200962417, 923768),
-        createData('Brazil', 'BR', 210147125, 8515767),
-    ];
-
-    const [page, setPage] = React.useState(true);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
-    // const dispatch= useDispatch()
-    
     // useEffect(() => {
-    //     dispatch(getFacturas())
+    //     // dispatch(getFacturas())
+    //     makeGetRequest()
     // }, [])
-    
+
 
 
     return (
@@ -200,7 +179,7 @@ export const CrearTicket = () => {
 
                                             </List>
                                         </Grid>
-                                        
+
                                         <Grid item lg={3}>
                                             <List component="nav">
                                                 <ListItem disablePadding>
@@ -227,23 +206,14 @@ export const CrearTicket = () => {
                                                 <ListItem disablePadding>
 
                                                     <CardContent >
-                                                        {/* <Button
-                                                            variant="contained"
-                                                            size="large"
-                                                            onClick={()=>prueba()}
-                                                        >
-                                                            CARGAR
-                                                        </Button> */}
-                                                        
-
-                                                        <input 
-                                                            type="file" 
-                                                            name="files" 
-                                                            className='form-control form-control-lg' 
+                                                        <input
+                                                            type="file"
+                                                            name="files"
+                                                            className='form-control form-control-lg'
                                                             accept='text/xml'
-                                                            onChange={(e)=>subirArchivos(e.target.files)}
+                                                            onChange={(e) => subirArchivos(e.target.files)}
                                                         />
-                                                    
+
                                                     </CardContent>
                                                 </ListItem>
 
@@ -309,6 +279,12 @@ export const CrearTicket = () => {
                 </Grid>
 
             </div>
+
+            <button
+                onClick={peticionGet}
+            >
+                    PRUEBAS
+            </button>
 
 
 

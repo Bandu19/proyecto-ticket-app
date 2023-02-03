@@ -2,9 +2,14 @@ import React, { useContext, useEffect, useState } from "react"
 import { useHideMenu } from "../hooks/useHideMenu"
 import { SocketContext } from '../context/UiContext'
 import { Divider, Typography } from "antd"
+import { useNavigate } from 'react-router-dom'
+
+import {animateScroll as scroll} from 'react-scroll'
+
 import axios from "axios"
 import { CardContent, Collapse, Grid, List, ListItem, ListItemButton, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, } from "@mui/material"
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button';
 
 import { ExpandMore, KeyboardArrowRight } from "@mui/icons-material"
 
@@ -12,8 +17,10 @@ const { Title, Text } = Typography
 
 export const Formulario = () => {
 
-    const { validando, factura } = useContext(SocketContext) /// DATA
-    console.log(factura)
+    useHideMenu(true)
+
+    const { validando, factura, recibirFactura } = useContext(SocketContext) /// DATA
+    // console.log(factura)
 
     const [form, setForm] = useState({
         fecha: '',
@@ -32,25 +39,32 @@ export const Formulario = () => {
         uuidaFac: ''
 
     })
+    const history = useNavigate()
 
     // ** CAMBIAR TRUE
     const [open, setOpen] = useState(false)
     const [oper, setOper] = useState(false)
 
+    const [abrirCampo,setAbrirCampo] = useState(false)
 
-    const handleClick = () => {
-        setOpen(!open)
-    }
+    useEffect(()=>{
+        if(open){
+            setAbrirCampo(true)
+        } else{
+            setAbrirCampo(false)
+        }
+
+    },[open])
 
     const handleClick2 = () => {
         setOper(!oper)
     }
+    const handleClick = () => {
+        setOpen(!open)
+    }
 
-   
-    useHideMenu(true)
-
-    console.log(form)
-
+    // console.log(form)
+ 
     useEffect(() => {
 
         // Obtienes la Data
@@ -59,21 +73,21 @@ export const Formulario = () => {
                 ...form,
                 fecha: factura?.Fecha,
                 folio: factura?.Folio,
-                nombreEmisor: factura?.Emisor.Nombre,
-                rfcEmisor: factura?.Emisor.RFC,
-                regimenFiscalEmisor: factura?.Emisor.RegimenFiscal,
-                nombreReceptor: factura?.Receptor.Nombre,
-                rfcReceptor: factura?.Receptor.RFC,
-                usoCFDI_Receptor: factura?.Receptor.UsoCFDI,
+                nombreEmisor: factura?.Emisor?.Nombre,
+                rfcEmisor: factura?.Emisor?.RFC,
+                regimenFiscalEmisor: factura?.Emisor?.RegimenFiscal,
+                nombreReceptor: factura?.Receptor?.Nombre,
+                rfcReceptor: factura?.Receptor?.RFC,
+                usoCFDI_Receptor: factura?.Receptor?.UsoCFDI,
                 subtotal: factura?.Subtotal,
                 conceptos: factura?.Conceptos,
                 total: factura?.Total,
-                uuidaFac: factura?.TimbreFiscalDigital.UUID
+                uuidaFac: factura?.TimbreFiscalDigital?.UUID
             }))
         }
     }, [validando, factura])
 
-    
+
     // ** Cambias el target Inputs
     const onChange = ({ target }) => {
         const { name, value } = target
@@ -83,18 +97,12 @@ export const Formulario = () => {
         })
     }
 
-   
-
-    const onSubmit = async (ev) => {
-        ev.preventDefault()
-        console.log(form)
-
+    const todoOk = () => {
         setForm((form) => ({
-
             ...form,
             fecha: '',
             folio: '',
-            timbreFiscal:'',
+            timbreFiscal: '',
             nombreEmisor: '',
             rfcEmisor: '',
             regimenFiscalEmisor: '',
@@ -107,12 +115,44 @@ export const Formulario = () => {
             total: '',
             uuidaFac: ''
         }))
+        // Vacia el estado "Padre"
+        recibirFactura('')
+        // Regresamos a la ruta anterior
+        history('/crear')
         
+        scroll.scrollToTop();
+    }
+
+    const todoForm = ()=>{
+        return (form?.folio) ? true: false
+    }
+
+    const onSubmit = async (ev) => {
+        ev.preventDefault()
+        console.log(form)
+
+        setForm((form) => ({
+            ...form,
+            fecha: '',
+            folio: '',
+            timbreFiscal: '',
+            nombreEmisor: '',
+            rfcEmisor: '',
+            regimenFiscalEmisor: '',
+            nombreReceptor: '',
+            rfcReceptor: '',
+            usoCFDI_Receptor: '',
+            conceptos: [],
+            subtotal: '',
+            impuesto: '',
+            total: '',
+            uuidaFac: ''
+        }))
+
         const config = {
             headers: {
                 // 'Accept': 'application/json'
                 'Content-Type': 'multipart/form-data'
-
             }
         }
 
@@ -120,7 +160,7 @@ export const Formulario = () => {
             const formData = new FormData()
 
             const key = "f9c54ed6-d851-4772-9e9d-7bd75da75467"
-            const folio= form.uuidaFac
+            const folio = form.uuidaFac
 
             formData.append('folio_fiscal', form?.uuidaFac)
             formData.append('emisor_nombre', form?.nombreEmisor)
@@ -136,10 +176,10 @@ export const Formulario = () => {
             formData.append('magic-key', key)
 
             const res = await axios.post(`https://dolphin-app-2p6gu.ondigitalocean.app/cfdi?magic-key=${key}&folio_fiscal=${folio}`, formData, config)
-            
-            
+
+
             console.log(res.data)
-        
+
         } catch (error) {
             console.log(error)
         }
@@ -249,7 +289,7 @@ export const Formulario = () => {
                         </Grid>
 
                     </Grid>
-                    
+
                     {/* Vista Emisor y Receptor */}
                     <Grid container spacing={2} pb={2}>
 
@@ -460,7 +500,7 @@ export const Formulario = () => {
 
 
                                             <ListItemButton onClick={handleClick}>
-                                                {open ? <ExpandMore /> : <KeyboardArrowRight />}
+                                                {abrirCampo ? <ExpandMore /> : <KeyboardArrowRight />}
 
                                                 <ListItemText
                                                     secondary={
@@ -489,7 +529,7 @@ export const Formulario = () => {
 
                                             </ListItemButton>
 
-                                            <Collapse in={open} timeout="auto" unmountOnExit>
+                                            <Collapse in={abrirCampo} timeout="auto" unmountOnExit>
                                                 <List component="div" disablePadding>
                                                     {/* **TODO: TABLAS */}
                                                     <TableContainer component={Paper} sx={{ pl: 3, height: 256 }}>
@@ -506,7 +546,7 @@ export const Formulario = () => {
                                                             </TableHead>
 
                                                             <TableBody >
-                                                                {form?.conceptos.map((row, index) => (
+                                                                {form?.conceptos?.map((row, index) => (
                                                                     <TableRow
                                                                         key={index}
                                                                     >
@@ -587,7 +627,7 @@ export const Formulario = () => {
                                                                 <TextField
                                                                     error={false}
                                                                     disabled
-                                                                    label="Subtotal"
+                                                                    label="Impuesto"
                                                                     type="text"
                                                                     name="impuesto"
                                                                     margin="dense"
@@ -642,26 +682,48 @@ export const Formulario = () => {
 
                         </Grid>
                     </div>
-                    
 
+                    <div className="row">
+                        <Grid container spacing={2} justifyContent="flex-end" pb={5}>
+                            <Grid item xs={12} sm={8} md={8} lg={5} >
+                            </Grid>
 
+                            <Grid item xs={12} sm={12} md={8} lg={5} >
+                                <Box  p={2}>
+                                    <Grid container direction="column" alignItems="flex-end">
+                                        <List >
+                                            <ListItem disablePadding alignItems="center">
+                                                <Grid container spacing={8}>
+                                                    <Grid item xs={6}>
+                                                         <Button
+                                                            component="label"
+                                                            variant="outlined"
+                                                            color="error"
+                                                            onClick={() => todoOk()}
+                                                        >
+                                                            Regresar
+                                                        </Button>
+                                                    </Grid>
+                                                    <Grid item xs>
+                                                        <button
+                                                            className="btn btn-outline-success"
+                                                            type="submit"
+                                                            disabled={!todoForm()}
+                                                        >
+                                                            Enviar
+                                                        </button>
+                                                    </Grid>
+                                                </Grid>
 
-                    <div className="text-center d-grid gap-2 col-4 mx-auto">
-                        <button
-                            className="btn btn-outline-success btn-lg"
-                            type="submit"
-                        // disabled={!todoOk()}
+                                            </ListItem>
+                                        </List>
+                                    </Grid>
+                                </Box>
+                            </Grid>
 
-                        >
-                            Enviar
-                        </button>
-
-
-
+                        </Grid>
                     </div>
-
                 </form>
-
             </div>
         </>
     )
