@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { CloseCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
 import { Button, Col, Divider, Row, Typography } from 'antd'
 import { getUsuarioStorage } from '../helpers/getUsuarioStorage'
 import { useHideMenu } from '../hooks/useHideMenu'
 import { Navigate, useNavigate } from 'react-router'
+import { SocketContext } from '../context/SocketContext'
 
 
 const { Title, Text } = Typography
@@ -21,10 +22,10 @@ export const Escritorio = () => {
     const [usuario] = useState(getUsuarioStorage())
 
     // UseContext para el socket
-    // const { socket } = useContext(SocketContext)
+    const { socket } = useContext(SocketContext)
 
 
-    const [tickets] = useState(null)
+    const [tickets,setTickets] = useState(null)
 
     const salir = () => {
 
@@ -44,10 +45,10 @@ export const Escritorio = () => {
         console.log('siguiente Ticket')
         console.log(usuario)
 
-        // socket.emit('siguiente-ticket-trabajar', usuario, (ticket) => {
-        //     console.log("1:", ticket)
-        //     setTickets(ticket)
-        // })
+        socket.emit('siguiente-ticket-trabajar', usuario, (ticket) => {
+            console.log("1:", ticket)
+            setTickets(ticket)
+        })
     }
 
     // POR LA CUAL NO TE DEJA REGRESAR A INGRESAR  

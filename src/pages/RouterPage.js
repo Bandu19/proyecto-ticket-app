@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 
 import { Cola } from './Cola';
-import { CrearTicket } from './CrearTicket'
 import { Ingresar } from './Ingresar'
-import { Escritorio } from './Escritorio';
+import {Escritorio } from './Escritorio'
 import { SocketContext } from '../context/UiContext';
 
 import {
@@ -23,7 +22,7 @@ import {
 
 
 import { Layout, Menu } from 'antd';
-import { Formulario } from './formulario';
+import { CrearTicket } from './CrearTicket';
 
 const { Sider, Content } = Layout;
 
@@ -70,7 +69,7 @@ export const RouterPage = () => {
                                 key: '3',
                                 icon: <UploadOutlined />,
                                 label: <Link to="/crear">
-                                    Enviar archivos xml
+                                    Crear Tikets
                                 </Link>,
                             }
                         ]}
@@ -92,13 +91,10 @@ export const RouterPage = () => {
                         <Routes>
                             <Route path="/ingresar" element={<Ingresar />} />
                             <Route path="/cola" element={<Cola />} />
-                            <Route path="/escritorio" element={<Escritorio />} />
-
-
                             <Route path="/crear" element={<CrearTicket />} />
-                            <Route path="/formulario" element={<Formulario />} />
-                            
-                            <Route path="/" element={<Navigate to="/crear" />} />
+                            <Route path="/escritorio" element={ <Escritorio/> } />
+
+                            <Route path="/" element={<Navigate to="/ingresar" />} />
 
                         </Routes>
 

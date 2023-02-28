@@ -6,9 +6,7 @@ export const SocketContext = createContext()  // UTILIZA
 export const SocketProvider = ({ children }) => {
 
     // Cusstom Hook
-    // Conectandome al servidor del back en HEROKU
-    // const { socket, online } = useSocket('https://reac-tickets-server.herokuapp.com/')
-    // const { socket, online } = useSocket('http://localhost:8080/')
+    const { socket, online } = useSocket('https://proyecto-ticket-server-production.up.railway.app/')
 
     return (
 

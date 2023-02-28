@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card, Col, Divider, List, Row, Tag, Typography } from 'antd';
 import { useHideMenu } from '../hooks/useHideMenu';
-// import { SocketContext } from '../context/SocketContext';
+import { SocketContext } from '../context/SocketContext';
 import { getUltimos } from '../helpers/getUltimos';
 
 
@@ -12,24 +12,24 @@ export const Cola = () => {
     // METODO DE OCULTAR MENU
     useHideMenu(true)
 
-    // const { socket } = useContext(SocketContext)
+    const { socket } = useContext(SocketContext)
 
     const [tickets, setTickets] = useState([])
 
     console.log(tickets)
 
 
-    // useEffect(() => {
-    //     socket.on('ticket-asignado', (data) => {
-    //         setTickets(data)
-    //     })
+    useEffect(() => {
+        socket.on('ticket-asignado', (data) => {
+            setTickets(data)
+        })
 
-    //     // Voy a dejar de escuhar
-    //     return () => {
-    //         socket.off('ticket-asignado')
-    //     }
+        // Voy a dejar de escuhar
+        return () => {
+            socket.off('ticket-asignado')
+        }
 
-    // }, [socket])
+    }, [socket])
 
     // Comunicarse con la API REST
     const getLista = async () => {
